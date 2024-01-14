@@ -222,8 +222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa39ab94e665d44c97b4653414fa86d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridSizeX: 7
-  GridSizeY: 7
+  GridSizeX: 1
+  GridSizeY: 4
   CAMERA: {fileID: 1636861806}
   GridCell: {fileID: 1692001243987663750, guid: 8bf9eb89795b2c74f8e2d987cc10103d, type: 3}
   inPlacementMode: 0

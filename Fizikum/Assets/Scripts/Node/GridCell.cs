@@ -155,6 +155,7 @@ public class GridCell : MonoBehaviour
     public void InstantiateConnectionNodePrefab()
     {
         connectionNode = Instantiate(_connectionNodePrefab, this.gameObject.transform.position, Quaternion.identity, this.transform).GetComponent<ConnectionNode>();
+        connectionNode.ItemType = ItemType.None;
     }
 
     public void SpaceIsOccupied(bool asTemporalWarning)
@@ -180,7 +181,14 @@ public class GridCell : MonoBehaviour
 
     public void DeletePrefab()
     {
+        if (connectionNode.ItemType == ItemType.Battery && connectionNode.batteryNode != connectionNode)
+        {
+            print("original 2 is destroyed");
+            connectionNode.batteryNode.DestroyNode();
+            Destroy(connectionNode.batteryNode.gameObject);
+        }
         connectionNode.DestroyNode();
+        Destroy(connectionNode.gameObject);
         InstantiateConnectionNodePrefab();
     }
 
@@ -216,11 +224,13 @@ public class GridCell : MonoBehaviour
 
     public void InstantiateBatteryPrefabAndConnectNodes(GridCell[] otherCells, int rotation)
     {
-        for (int i = 0; i < otherCells.Length; i++)
-        {
-            otherCells[i].connectionNode = this.connectionNode;
-        }
         connectionNode.InstantiateBatteryNode(rotation);
+        otherCells[0].connectionNode = this.connectionNode;
+        otherCells[0].connectionNode.isPositive = true;
+
+        otherCells[1].connectionNode.batteryNode = this.connectionNode;
+        otherCells[1].connectionNode.isPositive = false;
+        otherCells[1].connectionNode.ItemType = ItemType.Battery;
     }
 
     public void Invoke_OccupiedWhenPlaced()

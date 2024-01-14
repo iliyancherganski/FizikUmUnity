@@ -226,13 +226,13 @@ public class GridConnectionNode : MonoBehaviour
     public void DeleteAction_GridPrefab(int xIndex, int yIndex)
     {
         var cell = cells[xIndex, yIndex];
-        cell.connectionNode.ItemType = ItemType.None;
-        if (cell.connectionNode.CurrentObject != null)
+        if (cell.connectionNode.CurrentObject != null ||
+            (cell.connectionNode.ItemType == ItemType.Battery && cell.connectionNode.batteryNode != null))
         {
-            //print("deleting");
+            print("deleting");
             cell.DeletePrefab();
         }
-        ClearSelections();
+        //ClearSelections();
         if (xIndex + 1 < GridSizeX && cells[xIndex + 1, yIndex].connectionNode.ItemType == ItemType.Cable)
         {
             print("g1");
@@ -254,7 +254,7 @@ public class GridConnectionNode : MonoBehaviour
             CreateAction_GridPrefab(xIndex, yIndex - 1, ItemType.Cable, false);
         }
 
-        
+
     }
     public void CreateAction_GridPrefab(int xIndex, int yIndex, ItemType itemType, bool firstLoop = true)
     {
@@ -407,6 +407,7 @@ public class GridConnectionNode : MonoBehaviour
 
         GridCell[] cells = new GridCell[]
         {
+            cellArray[1],
             cellArray[2]
         };
         cellArray[1].InstantiateBatteryPrefabAndConnectNodes(cells, PlacementModeRotation);

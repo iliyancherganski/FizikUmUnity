@@ -19,6 +19,8 @@ public class ConnectionNode : MonoBehaviour
 
     [Header("Battery Prefabs")]
     public GameObject Battery1;
+    public ConnectionNode batteryNode;
+    public bool isPositive = false;
 
     [Header("Lightbulb Prefabs")]
     public GameObject Lightbulb1;
@@ -27,13 +29,16 @@ public class ConnectionNode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        isPositive = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (ItemType == ItemType.Battery && batteryNode == null)
+        {
+            ItemType = ItemType.None;
+        }
     }
 
     public void InstantiateCableNode(bool up, bool left, bool down, bool right)
@@ -145,6 +150,7 @@ public class ConnectionNode : MonoBehaviour
         }*/
         ItemType = ItemType.Battery;
         CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, rotation * -90, 0));
+        batteryNode = this;
     }
 
     public void InstantiateLightbulbNode()
@@ -155,7 +161,7 @@ public class ConnectionNode : MonoBehaviour
 
     public void DestroyNode()
     {
-        Destroy(CurrentObject);
+        Destroy(CurrentObject.gameObject);
         if (CurrentObject != null)
         {
             CurrentObject = null;
