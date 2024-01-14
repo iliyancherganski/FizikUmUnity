@@ -6,6 +6,7 @@ public class ConnectionNode : MonoBehaviour
 {
     public ItemType ItemType;
 
+    public ConnectionNode[] AllConnections = new ConnectionNode[4];
     public ConnectionNode[] PreviousConnection = new ConnectionNode[4];
     public ConnectionNode[] NextConnection = new ConnectionNode[4];
 
@@ -161,11 +162,12 @@ public class ConnectionNode : MonoBehaviour
 
     public void DestroyNode()
     {
-        Destroy(CurrentObject.gameObject);
+        Destroy(CurrentObject);
         if (CurrentObject != null)
         {
             CurrentObject = null;
         }
+        print("reaches here");
         ItemType = ItemType.None;
     }
 }

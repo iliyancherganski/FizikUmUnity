@@ -362,6 +362,7 @@
 "Assets/Scripts/Node/CursorPoint.cs"
 "Assets/Scripts/Node/GridCell.cs"
 "Assets/Scripts/Node/GridConnectionNode.cs"
+"Assets/Scripts/Node/GridElectricityFlow.cs"
 "Assets/Scripts/Node/UpdateGridEventHandler.cs"
 -langversion:9.0
 

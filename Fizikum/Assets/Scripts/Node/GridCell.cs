@@ -212,14 +212,6 @@ public class GridCell : MonoBehaviour
             }
             connectionNode.InstantiateLightbulbNode();
         }
-        /*else if (itemType == ItemType.Battery)
-        {
-            if (canBePlaced)
-            {
-                connectionNode.InstantiateBatteryNode();
-            }
-        }*/
-
     }
 
     public void InstantiateBatteryPrefabAndConnectNodes(GridCell[] otherCells, int rotation)
@@ -229,6 +221,7 @@ public class GridCell : MonoBehaviour
         otherCells[0].connectionNode.isPositive = true;
 
         otherCells[1].connectionNode.batteryNode = this.connectionNode;
+        otherCells[1].connectionNode.CurrentObject = this.connectionNode.CurrentObject;
         otherCells[1].connectionNode.isPositive = false;
         otherCells[1].connectionNode.ItemType = ItemType.Battery;
     }
@@ -239,5 +232,4 @@ public class GridCell : MonoBehaviour
         isOccupied = false;
         cellStatus = CellStatus.Unselected;
     }
-
 }
