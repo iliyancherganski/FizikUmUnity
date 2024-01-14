@@ -1,0 +1,165 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ConnectionNode : MonoBehaviour
+{
+    public ItemType ItemType;
+
+    public ConnectionNode[] PreviousConnection = new ConnectionNode[4];
+    public ConnectionNode[] NextConnection = new ConnectionNode[4];
+
+    public GameObject CurrentObject;
+
+    [Header("Cable Prefabs")]
+    public GameObject cableUpRightPrefab_2;
+    public GameObject cableLeftRightPrefab_2;
+    public GameObject cableUpLeftRightPrefab_3;
+    public GameObject cableUpLeftDownRightPrefab_4;
+
+    [Header("Battery Prefabs")]
+    public GameObject Battery1;
+
+    [Header("Lightbulb Prefabs")]
+    public GameObject Lightbulb1;
+
+    public int Rotation;
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void InstantiateCableNode(bool up, bool left, bool down, bool right)
+    {
+        if (up)
+        {
+            if (left)
+            {
+                if (down)
+                {
+                    if (right)
+                    {
+                        // up left down right
+                        CurrentObject = Instantiate(cableUpLeftDownRightPrefab_4, this.transform.position, Quaternion.Euler(0, 0, 0));
+                    }
+                    else
+                    {
+                        // up left down
+                        CurrentObject = Instantiate(cableUpLeftRightPrefab_3, this.transform.position, Quaternion.Euler(0, -90, 0));
+                    }
+                }
+                else if (right)
+                {
+                    // up left right
+                    CurrentObject = Instantiate(cableUpLeftRightPrefab_3, this.transform.position, Quaternion.Euler(0, 0, 0));
+                }
+                else
+                {
+                    // up left
+                    CurrentObject = Instantiate(cableUpRightPrefab_2, this.transform.position, Quaternion.Euler(0, -90, 0));
+                }
+            }
+            else if (down)
+            {
+                if (right)
+                {
+                    // up down right 
+                    CurrentObject = Instantiate(cableUpLeftRightPrefab_3, this.transform.position, Quaternion.Euler(0, 90, 0));
+                }
+                else
+                {
+                    // up down 
+                    CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.Euler(0, 90, 0));
+                }
+            }
+            else if (right)
+            {
+                // up right 
+                CurrentObject = Instantiate(cableUpRightPrefab_2, this.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                // up 
+                CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.Euler(0, 90, 0));
+            }
+        }
+        else if (left)
+        {
+            if (down)
+            {
+                if (right)
+                {
+                    // left down right
+                    CurrentObject = Instantiate(cableUpLeftRightPrefab_3, this.transform.position, Quaternion.Euler(0, 180, 0));
+                }
+                else
+                {
+                    // left down
+                    CurrentObject = Instantiate(cableUpRightPrefab_2, this.transform.position, Quaternion.Euler(0, 180, 0));
+                }
+            }
+            else if (right)
+            {
+                // left right
+                CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                // left
+                CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+        }
+        else if (down)
+        {
+            if (right)
+            {
+                // down right
+                CurrentObject = Instantiate(cableUpRightPrefab_2, this.transform.position, Quaternion.Euler(0, 90, 0));
+            }
+            else
+            {
+                // down
+                CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.Euler(0, 90, 0));
+            }
+        }
+        else
+        {
+            // none
+            CurrentObject = Instantiate(cableLeftRightPrefab_2, this.transform.position, Quaternion.identity);
+        }
+        ItemType = ItemType.Cable;
+    }
+
+    public void InstantiateBatteryNode(int rotation)
+    {
+        /*if (currObjectIfExists == null)
+        {
+            CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, 0, 0));
+        }*/
+        ItemType = ItemType.Battery;
+        CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, rotation * -90, 0));
+    }
+
+    public void InstantiateLightbulbNode()
+    {
+        ItemType = ItemType.Lightbulb;
+        CurrentObject = Instantiate(Lightbulb1, this.transform.position, Quaternion.Euler(0, 0, 0));
+    }
+
+    public void DestroyNode()
+    {
+        Destroy(CurrentObject);
+        if (CurrentObject != null)
+        {
+            CurrentObject = null;
+        }
+        ItemType = ItemType.None;
+    }
+}

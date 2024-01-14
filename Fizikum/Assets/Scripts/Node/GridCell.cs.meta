@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c801971e0f4132c4789d57eb9e690391
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Unselected: {instanceID: 0}
+  - Hovered: {instanceID: 0}
+  - Selected: {instanceID: 0}
+  - FreeCell: {fileID: 2100000, guid: 3b55ac1d48b5f6544a821a082282b33f, type: 2}
+  - OccupiedCell: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
