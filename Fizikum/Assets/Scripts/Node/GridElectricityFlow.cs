@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class GridElectricityFlow : MonoBehaviour
@@ -44,13 +45,30 @@ public class GridElectricityFlow : MonoBehaviour
         // first battery only
         var firstCable = FirstCableAfterBattery(cellsWithBattery[0]);
         TempCell batteryTC = new TempCell(cellsWithBattery[0].GridIndex_X, cellsWithBattery[0].GridIndex_Y);
-        TempCell firstTC = new TempCell(firstCable.GridIndex_X, firstCable.GridIndex_Y);
-        batteryTC.next.Add(firstTC);
+        if (firstCable != null)
+        {
+            TempCell firstTC = new TempCell(firstCable.GridIndex_X, firstCable.GridIndex_Y);
+            batteryTC.next.Add(firstTC);
 
-        bool canConnect = CanConnect(firstTC, batteryTC, cellsWithBattery[0].connectionNode);
+            bool canConnect = CanConnect(firstTC, batteryTC, cellsWithBattery[0].connectionNode);
+
+            if (canConnect)
+            {
+                _Console = "connected";
+            }
+            else
+            {
+                _Console = "not connected";
+            }
+        }
+        else
+        {
+            _Console = "not connected";
+        }
     }
     public void FindBatteries()
     {
+        cellsWithBattery = new List<GridCell> ();
         foreach (var cell in grid.cells)
         {
             if (cell.connectionNode.ItemType == ItemType.Battery
@@ -87,8 +105,16 @@ public class GridElectricityFlow : MonoBehaviour
                 || surrCells[i].connectionNode.ItemType == ItemType.Lightbulb)
             {
                 TempCell next = new TempCell(surrCells[i].GridIndex_X, surrCells[i].GridIndex_Y);
+                bool alreadyHasConnection = AlreadyHasConnectionWithTC(current, next);
+                if (alreadyHasConnection)
+                {
+                    continue;
+                }
                 current.next.Add(next);
-                foundNext = CanConnect(next, current, battery);
+                if (!foundNext)
+                {
+                    foundNext = CanConnect(next, current, battery);
+                }
             }
         }
         if (foundNext)
@@ -97,6 +123,20 @@ public class GridElectricityFlow : MonoBehaviour
         }
         return false;
     }
+
+    public bool AlreadyHasConnectionWithTC(TempCell curr, TempCell cell)
+    {
+        foreach (var item in curr.next)
+        {
+            if (item == cell)
+            {
+                return true;
+            }
+            continue;
+        }
+        return false;
+    }
+
     public GridCell[] FindSurroundingCells(GridCell initial)
     {
         int x = initial.GridIndex_X;

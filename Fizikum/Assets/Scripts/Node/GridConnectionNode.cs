@@ -17,6 +17,7 @@ public class GridConnectionNode : MonoBehaviour
     public GameObject GridCell;
 
     public bool inPlacementMode = false;
+    public bool inDeleteMode = false;
     public ItemType PlacementModeItemType;
     public int PlacementModeRotation = 0;
 
@@ -224,11 +225,14 @@ public class GridConnectionNode : MonoBehaviour
     public void DeleteAction_GridPrefab(int xIndex, int yIndex)
     {
         var cell = cells[xIndex, yIndex];
-        if (cell.connectionNode.CurrentObject != null ||
+        if (cell.connectionNode.ItemType == ItemType.None)
+            return;
+        if (cell.connectionNode.ItemType != ItemType.None ||
             (cell.connectionNode.ItemType == ItemType.Battery && cell.connectionNode.batteryNode != null))
         {
             print("deleting");
             cell.DeletePrefab();
+            inDeleteMode = true;
         }
         //ClearSelections();
         if (xIndex + 1 < GridSizeX && cells[xIndex + 1, yIndex].connectionNode.ItemType == ItemType.Cable)
@@ -251,6 +255,7 @@ public class GridConnectionNode : MonoBehaviour
             print("g4");
             CreateAction_GridPrefab(xIndex, yIndex - 1, ItemType.Cable, false);
         }
+        inDeleteMode = false;
     }
 
     public void CreateAction_GridPrefab(int xIndex, int yIndex, ItemType itemType, bool firstLoop = true)
@@ -269,15 +274,21 @@ public class GridConnectionNode : MonoBehaviour
         bool down = false;
         bool right = false;
 
-        print(itemType.ToString());
+        //print(itemType.ToString());
+        //bool wasSelected = false;
+        /* if (cells[xIndex, yIndex].cellStatus == CellStatus.Selected)
+         {
+             //wasSelected = true;
+             cells[xIndex, yIndex].cellStatus = CellStatus.Unselected;
+         }*/
 
         // UP
         if (xIndex > 0)
         {
             var cell = cells[xIndex - 1, yIndex];
 
-            if ((cell.connectionNode.CurrentObject != null
-                || cell.cellStatus == CellStatus.Selected))
+            if (cell.connectionNode.CurrentObject != null
+                || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
                 up = true;
 
@@ -293,8 +304,8 @@ public class GridConnectionNode : MonoBehaviour
         if (yIndex > 0)
         {
             var cell = cells[xIndex, yIndex - 1];
-            if ((cell.connectionNode.CurrentObject != null ||
-            cell.cellStatus == CellStatus.Selected))
+            if (cell.connectionNode.CurrentObject != null
+                || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
                 left = true;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
@@ -309,11 +320,11 @@ public class GridConnectionNode : MonoBehaviour
         if (xIndex < cells.GetLength(0) - 1)
         {
             var cell = cells[xIndex + 1, yIndex];
-            if (cell.connectionNode.CurrentObject != null ||
-            cell.cellStatus == CellStatus.Selected)
+            if (cell.connectionNode.CurrentObject != null
+                || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
                 down = true;
-                if (firstLoop && cell.cellStatus != CellStatus.Selected 
+                if (firstLoop && cell.cellStatus != CellStatus.Selected
                     && cell.connectionNode.ItemType == ItemType.Cable)
                 {
                     CreateAction_GridPrefab(xIndex + 1, yIndex, ItemType.Cable, false);
@@ -326,14 +337,14 @@ public class GridConnectionNode : MonoBehaviour
         if (yIndex < cells.GetLength(1) - 1)
         {
             var cell = cells[xIndex, yIndex + 1];
-            if (cell.connectionNode.CurrentObject != null 
-                || cell.cellStatus == CellStatus.Selected)
+            if (cell.connectionNode.CurrentObject != null
+                || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
                 right = true;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
                     && cell.connectionNode.ItemType == ItemType.Cable)
                 {
-                    print("Entered RIGHT");
+                    //print("Entered RIGHT");
                     CreateAction_GridPrefab(xIndex, yIndex + 1, ItemType.Cable, false);
                 }
             }
@@ -342,6 +353,10 @@ public class GridConnectionNode : MonoBehaviour
         print($"row{xIndex} col{yIndex}" + Environment.NewLine + $"Up:{up}  Left:{left}  Down:{down}  Right:{right}");
 
         cells[xIndex, yIndex].InstantiateCorrectPrefab(itemType, canBePlaced, up, left, down, right);
+        /*if (wasSelected)
+        {
+            cells[xIndex, yIndex].cellStatus = CellStatus.Selected;
+        }*/
         flow.GridCheck();
     }
 
