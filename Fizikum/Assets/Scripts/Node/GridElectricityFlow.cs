@@ -50,7 +50,7 @@ public class GridElectricityFlow : MonoBehaviour
             TempCell firstTC = new TempCell(firstCable.GridIndex_X, firstCable.GridIndex_Y);
             batteryTC.next.Add(firstTC);
 
-            bool canConnect = CanConnect(firstTC, batteryTC, cellsWithBattery[0].connectionNode);
+            bool canConnect = CanConnect(firstTC, batteryTC, cellsWithBattery[0]);
 
             if (canConnect)
             {
@@ -68,7 +68,7 @@ public class GridElectricityFlow : MonoBehaviour
     }
     public void FindBatteries()
     {
-        cellsWithBattery = new List<GridCell> ();
+        cellsWithBattery = new List<GridCell>();
         foreach (var cell in grid.cells)
         {
             if (cell.connectionNode.ItemType == ItemType.Battery
@@ -82,26 +82,31 @@ public class GridElectricityFlow : MonoBehaviour
             }
         }
     }
-    public bool CanConnect(TempCell current, TempCell previous, ConnectionNode battery)
+    public bool CanConnect(TempCell current, TempCell previous, GridCell battery)
     {
         current.prev.Add(previous);
         var surrCells = FindSurroundingCells(grid.cells[current.X, current.Y]);
         bool foundNext = false;
         for (int i = 0; i < 4; i++)
         {
-            if (surrCells[i] == null 
+            if (surrCells[i] == null
                 || surrCells[i].connectionNode.ItemType == ItemType.None
                 || current.prev
-                    .Any(x=>x.X == surrCells[i].GridIndex_X
-                        && x.Y == surrCells[i].GridIndex_Y))
+                    .Any(x => x.X == surrCells[i].GridIndex_X
+                        && x.Y == surrCells[i].GridIndex_Y)
+                || surrCells[i] == battery)
             {
                 continue;
             }
-            if (surrCells[i].connectionNode.batteryNode == battery)
+            if (surrCells[i].connectionNode.batteryNode == battery.connectionNode)
             {
-                return true;
+                var endCableToBattery = LastCableAfterBattery(battery);
+                if (grid.cells[current.X, current.Y] == endCableToBattery)
+                {
+                    return true;
+                }
             }
-            if (surrCells[i].connectionNode.ItemType == ItemType.Cable
+            else if (surrCells[i].connectionNode.ItemType == ItemType.Cable
                 || surrCells[i].connectionNode.ItemType == ItemType.Lightbulb)
             {
                 TempCell next = new TempCell(surrCells[i].GridIndex_X, surrCells[i].GridIndex_Y);
@@ -183,10 +188,11 @@ public class GridElectricityFlow : MonoBehaviour
     }
     public GridCell FirstCableAfterBattery(GridCell battery)
     {
-        //r0: x-1
-        //r1: y-1
-        //r2: x+1
-        //r3: y+1
+        //    1st   2nd
+        //r0: x-1   x+2
+        //r1: y-1   y+2
+        //r2: x+1   x-2
+        //r3: y+1   y-2
         GridCell cell = null;
         switch (grid.PlacementModeRotation)
         {
@@ -201,6 +207,35 @@ public class GridElectricityFlow : MonoBehaviour
                 break;
             case 3:
                 cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y + 1];
+                break;
+        }
+        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
+        {
+            return cell;
+        }
+        return null;
+    }
+    public GridCell LastCableAfterBattery(GridCell battery)
+    {
+        //    1st   2nd
+        //r0: x-1   x+2
+        //r1: y-1   y+2
+        //r2: x+1   x-2
+        //r3: y+1   y-2
+        GridCell cell = null;
+        switch (grid.PlacementModeRotation)
+        {
+            case 0:
+                cell = grid.cells[battery.GridIndex_X + 2, battery.GridIndex_Y];
+                break;
+            case 1:
+                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y + 2];
+                break;
+            case 2:
+                cell = grid.cells[battery.GridIndex_X - 2, battery.GridIndex_Y];
+                break;
+            case 3:
+                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y - 2];
                 break;
         }
         if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)

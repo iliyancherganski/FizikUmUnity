@@ -167,7 +167,7 @@ public class ConnectionNode : MonoBehaviour
         {
             CurrentObject = null;
         }
-        print("reaches here");
+        //print("reaches here");
         ItemType = ItemType.None;
     }
 }

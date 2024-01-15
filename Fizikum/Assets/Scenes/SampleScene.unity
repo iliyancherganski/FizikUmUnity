@@ -224,11 +224,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flow: {fileID: 574298043}
-  GridSizeX: 5
-  GridSizeY: 5
+  GridSizeX: 8
+  GridSizeY: 8
   CAMERA: {fileID: 1636861806}
   GridCell: {fileID: 1692001243987663750, guid: 8bf9eb89795b2c74f8e2d987cc10103d, type: 3}
   inPlacementMode: 0
+  inDeleteMode: 0
   PlacementModeItemType: 0
   PlacementModeRotation: 0
   placeCableKey: 49
