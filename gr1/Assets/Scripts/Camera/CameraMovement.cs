@@ -5,6 +5,10 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public GameObject center;
+    public GameObject cameraWithCells;
+    public GameObject cameraWithoutCells;
+    public bool cellsAreVisible = false;
+    public KeyCode hideCellsKey = KeyCode.H;
     public Vector3 camInitialPos;
     [Header("Sensitivity")]
     public float sensitivity;
@@ -30,6 +34,22 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!cellsAreVisible && Input.GetKeyDown(hideCellsKey))
+        {
+            print("turned on");
+            cellsAreVisible = true;
+            cameraWithCells.SetActive(false);
+            cameraWithoutCells.SetActive(true);
+        }
+        else if ((cellsAreVisible && Input.GetKeyDown(KeyCode.Mouse0)) 
+            || (cellsAreVisible && Input.GetKeyDown(hideCellsKey)))
+        {
+            print("turned off");
+            cellsAreVisible = false;
+            cameraWithCells.SetActive(true);
+            cameraWithoutCells.SetActive(false);
+        }
+
         CameraRotation();
         CamMovement();
         ZoomCamera();        

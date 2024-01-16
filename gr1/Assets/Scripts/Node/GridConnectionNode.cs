@@ -10,6 +10,7 @@ public class GridConnectionNode : MonoBehaviour
     public int GridSizeX;
     public int GridSizeY;
     public CameraMovement CAMERA;
+    public GameObject TableGO;
     public GameObject GridCell;
 
     public bool inPlacementMode = false;
@@ -90,6 +91,7 @@ public class GridConnectionNode : MonoBehaviour
     {
         CAMERA.camInitialPos = new Vector3((-GridSizeX + 1) * 2, 0, (-GridSizeY + 1) * 2) * -1;
         CAMERA.transform.position = new Vector3((-GridSizeX + 1) * 2, 0, (-GridSizeY + 1) * 2) * -1;
+        TableGO.transform.position = new Vector3((-GridSizeX + 1) * 2, 0, (-GridSizeY + 1) * 2) * -1;
 
         //ConnectionNodeMatrix = new ConnectionNode[GridSizeX, GridSizeY];
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class ConnectionNode : MonoBehaviour
@@ -24,7 +25,9 @@ public class ConnectionNode : MonoBehaviour
     public bool isPositive = false;
 
     [Header("Lightbulb Prefabs")]
-    public GameObject Lightbulb1;
+    public GameObject Lightbulb_Off;
+    public GameObject Lightbulb_ON;
+    public bool isLit = false;
 
     public int Rotation;
     // Start is called before the first frame update
@@ -157,7 +160,28 @@ public class ConnectionNode : MonoBehaviour
     public void InstantiateLightbulbNode()
     {
         ItemType = ItemType.Lightbulb;
-        CurrentObject = Instantiate(Lightbulb1, this.transform.position, Quaternion.Euler(0, 0, 0));
+        CurrentObject = Instantiate(Lightbulb_Off, this.transform.position, Quaternion.Euler(0, 0, 0));
+    }
+
+    public void InstantiateLightbulb_ON_or_OFF(bool isLit)
+    {
+        if (ItemType == ItemType.Lightbulb)
+        {
+            if (isLit)
+            {
+                this.isLit = true;
+                Destroy(CurrentObject);
+                CurrentObject = null;
+                CurrentObject = Instantiate(Lightbulb_ON, this.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                this.isLit = false;
+                Destroy(CurrentObject);
+                CurrentObject = null;
+                CurrentObject = Instantiate(Lightbulb_Off, this.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+        } 
     }
 
     public void DestroyNode()

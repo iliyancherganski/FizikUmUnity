@@ -11,6 +11,7 @@ public class GridCell : MonoBehaviour
     public bool inPlacementMode = false;
     public GameObject _connectionNodePrefab;
     public ConnectionNode connectionNode;
+    public TempCell tempCell;
 
     [Header("Indexes")]
     public int GridIndex_X;
