@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -25,6 +26,9 @@ public class GridConnectionNode : MonoBehaviour
     public KeyCode rotateItemKey = KeyCode.R;
     public KeyCode placeLightbulbKey = KeyCode.Alpha3;
 
+    [Header("FOR EDITOR")]
+    public List<GridCell> allSelected = new List<GridCell>();
+
     void Start()
     {
         GenerateGrid();
@@ -33,6 +37,7 @@ public class GridConnectionNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        EDITOR_FindAllSelected();
         KeybindInput();
     }
 
@@ -131,6 +136,20 @@ public class GridConnectionNode : MonoBehaviour
                     {
                         DeleteAction_GridPrefab(i, j);
                     }
+                }
+            }
+        }
+    }
+    public void EDITOR_FindAllSelected()
+    {
+        allSelected = new List<GridCell> ();
+        for (int i = 0; i < cells.GetLength(0); i++)
+        {
+            for (int j = 0; j < cells.GetLength(1); j++)
+            {
+                if (cells[i, j].cellStatus == CellStatus.Selected)
+                {
+                    allSelected.Add(cells[i, j]);
                 }
             }
         }

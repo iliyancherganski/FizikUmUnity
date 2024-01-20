@@ -330,6 +330,7 @@ MonoBehaviour:
   deleteKey: 99
   rotateItemKey: 114
   placeLightbulbKey: 51
+  allSelected: []
 --- !u!4 &574298042
 Transform:
   m_ObjectHideFlags: 0
@@ -358,6 +359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 574298041}
   cellsWithBattery: []
+  cellsWithLightbulbs: []
   _Console: 
 --- !u!1 &644852905
 GameObject:

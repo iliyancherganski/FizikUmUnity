@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3988337957188257149}
   - component: {fileID: 6705675143061387425}
   - component: {fileID: 3369227140380341150}
+  - component: {fileID: 7760547536471867110}
   m_Layer: 8
   m_Name: Grid Cell
   m_TagString: GridCell
@@ -112,6 +113,7 @@ MonoBehaviour:
   _connectionNodePrefab: {fileID: 7281208209587075236, guid: 57584d783376d4f47ba653407331e3c1,
     type: 3}
   connectionNode: {fileID: 0}
+  tempCell: {fileID: 7760547536471867110}
   GridIndex_X: 0
   GridIndex_Y: 0
   ItemRotation: 0
@@ -125,3 +127,19 @@ MonoBehaviour:
   PlaceCableKey: 49
   isOccupied: 0
   isFree: 0
+--- !u!114 &7760547536471867110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692001243987663750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511e1d2f03cdb7743af8e0ece3364b84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 0
+  Y: 0
+  prev: []
+  next: []

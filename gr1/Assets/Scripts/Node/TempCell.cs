@@ -9,11 +9,11 @@ public class TempCell : MonoBehaviour
 
     public List<TempCell> prev = new List<TempCell>();
     public List<TempCell> next = new List<TempCell>();
-    public TempCell()
+    public void Reset(int x, int y)
     {
-    }
-    public TempCell(int x, int y)
-    {
+        prev = new List<TempCell>();
+
+        next = new List<TempCell>();
         X = x;
         Y = y;
     }
