@@ -26,11 +26,27 @@ public class GridConnectionNode : MonoBehaviour
     public KeyCode rotateItemKey = KeyCode.R;
     public KeyCode placeLightbulbKey = KeyCode.Alpha3;
 
+    [Header("Battery components")]
+    public List<GridCell> cellsWithBattery = new List<GridCell>();
+    public List<GridCell> cellsWithLightbulbs = new List<GridCell>();
+    public List<GridCell> batteryFirstCables = new List<GridCell>();
+    public List<GridCell> batteryLastCables = new List<GridCell>();
+
+
     [Header("FOR EDITOR")]
     public List<GridCell> allSelected = new List<GridCell>();
 
     void Start()
     {
+        if (GridSizeX >= 25)
+        {
+            GridSizeX = 25;
+        }
+        if (GridSizeY >= 25)
+        {
+            GridSizeY = 25;
+        }
+
         GenerateGrid();
     }
 
@@ -307,6 +323,19 @@ public class GridConnectionNode : MonoBehaviour
             if (cell.connectionNode.CurrentObject != null
                 || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
+                /*if (cell.connectionNode.ItemType != ItemType.Battery
+                    || cells[xIndex, yIndex] == FirstCableAfterBattery(cell)
+                    || cells[xIndex, yIndex] == LastCableAfterBattery(cell))
+                {
+                    print("entered UP");
+                    up = true;
+
+                    if (firstLoop && cell.cellStatus != CellStatus.Selected
+                        && cell.connectionNode.ItemType == ItemType.Cable)
+                    {
+                        CreateAction_GridPrefab(xIndex - 1, yIndex, ItemType.Cable, false);
+                    }
+                }*/
                 up = true;
 
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
@@ -324,6 +353,18 @@ public class GridConnectionNode : MonoBehaviour
             if (cell.connectionNode.CurrentObject != null
                 || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
+                /*if (cell.connectionNode.ItemType != ItemType.Battery
+                    || cells[xIndex, yIndex] == FirstCableAfterBattery(cell)
+                    || cells[xIndex, yIndex] == LastCableAfterBattery(cell))
+                {
+                    print("entered LEFT");
+                    left = true;
+                    if (firstLoop && cell.cellStatus != CellStatus.Selected
+                        && cell.connectionNode.ItemType == ItemType.Cable)
+                    {
+                        CreateAction_GridPrefab(xIndex, yIndex - 1, ItemType.Cable, false);
+                    }
+                }*/
                 left = true;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
                     && cell.connectionNode.ItemType == ItemType.Cable)
@@ -340,6 +381,19 @@ public class GridConnectionNode : MonoBehaviour
             if (cell.connectionNode.CurrentObject != null
                 || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
+                /*if (cell.connectionNode.ItemType != ItemType.Battery
+                    || cells[xIndex, yIndex] == FirstCableAfterBattery(cell)
+                    || cells[xIndex, yIndex] == LastCableAfterBattery(cell))
+                {
+                    print("entered DOWN");
+                    down = true;
+                    if (firstLoop && cell.cellStatus != CellStatus.Selected
+                        && cell.connectionNode.ItemType == ItemType.Cable)
+                    {
+                        CreateAction_GridPrefab(xIndex + 1, yIndex, ItemType.Cable, false);
+
+                    }
+                }*/
                 down = true;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
                     && cell.connectionNode.ItemType == ItemType.Cable)
@@ -357,6 +411,19 @@ public class GridConnectionNode : MonoBehaviour
             if (cell.connectionNode.CurrentObject != null
                 || (cell.cellStatus == CellStatus.Selected && !inDeleteMode))
             {
+                /*if (cell.connectionNode.ItemType != ItemType.Battery
+                    || cells[xIndex, yIndex] == FirstCableAfterBattery(cell)
+                    || cells[xIndex, yIndex] == LastCableAfterBattery(cell))
+                {
+                    print("entered RIGHT");
+                    right = true;
+                    if (firstLoop && cell.cellStatus != CellStatus.Selected
+                        && cell.connectionNode.ItemType == ItemType.Cable)
+                    {
+                        //print("Entered RIGHT");
+                        CreateAction_GridPrefab(xIndex, yIndex + 1, ItemType.Cable, false);
+                    }
+                }*/
                 right = true;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
                     && cell.connectionNode.ItemType == ItemType.Cable)
@@ -455,6 +522,65 @@ public class GridConnectionNode : MonoBehaviour
             Console.WriteLine("space free");
             c.SpaceIsFree();
         }
+    }
+
+    public GridCell FirstCableAfterBattery(GridCell battery)
+    {
+        //    1st   2nd
+        //r0: x-1   x+2
+        //r1: y-1   y+2
+        //r2: x+1   x-2
+        //r3: y+1   y-2
+        GridCell cell = null;
+        switch (PlacementModeRotation)
+        {
+            case 0:
+                cell = cells[battery.GridIndex_X - 1, battery.GridIndex_Y];
+                break;
+            case 1:
+                cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 1];
+                break;
+            case 2:
+                cell = cells[battery.GridIndex_X + 1, battery.GridIndex_Y];
+                break;
+            case 3:
+                cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 1];
+                break;
+        }
+        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
+        {
+            return cell;
+        }
+        return null;
+    }
+    public GridCell LastCableAfterBattery(GridCell battery)
+    {
+        //    1st   2nd
+        //r0: x-1   x+2
+        //r1: y-1   y+2
+        //r2: x+1   x-2
+        //r3: y+1   y-2
+        GridCell cell = null;
+        switch (PlacementModeRotation)
+        {
+            case 0:
+                cell = cells[battery.GridIndex_X + 2, battery.GridIndex_Y];
+                break;
+            case 1:
+                cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 2];
+                break;
+            case 2:
+                cell = cells[battery.GridIndex_X - 2, battery.GridIndex_Y];
+                break;
+            case 3:
+                cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 2];
+                break;
+        }
+        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
+        {
+            return cell;
+        }
+        return null;
     }
 }
 /*

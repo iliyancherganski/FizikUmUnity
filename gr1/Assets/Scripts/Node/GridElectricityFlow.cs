@@ -13,48 +13,54 @@ public class GridElectricityFlow : MonoBehaviour
 
     // List of batteries -> First GC is for +charge, the second one is for -charge
     //public List<Tuple<GridCell, GridCell>> cellsWithBattery = new List<Tuple<GridCell, GridCell>>();
-    public List<GridCell> cellsWithBattery = new List<GridCell>();
-    public List<GridCell> cellsWithLightbulbs = new List<GridCell>();
 
-    List<GridCell> batteryFirstCables = new List<GridCell>();
-    List<GridCell> batteryLastCables = new List<GridCell>();
+    
 
     public string _Console;
 
     public void GridCheck()
     {
+        print("entered");
         FindInGrid();
         ResetAllTC();
 
-        if (cellsWithBattery.Count == 0)
+        if (grid.cellsWithBattery.Count == 0)
         {
             _Console = "No batteries";
             return;
         }
-        foreach (var battery in cellsWithBattery)
+        grid.batteryFirstCables = new List<GridCell>();
+        grid.batteryLastCables = new List<GridCell>();
+        foreach (var battery in grid.cellsWithBattery)
         {
             battery.tempCell.Reset(battery.GridIndex_X, battery.GridIndex_Y);
-            var c1 = FirstCableAfterBattery(battery);
+            var c1 = grid.FirstCableAfterBattery(battery);
             if (c1 != null)
             {
                 c1.tempCell.Reset(c1.GridIndex_X, c1.GridIndex_Y);
             }
-            batteryFirstCables.Add(c1);
-            var c2 = LastCableAfterBattery(battery);
+            if (!grid.batteryFirstCables.Contains(c1))
+            {
+                grid.batteryFirstCables.Add(c1);
+            }
+            var c2 = grid.LastCableAfterBattery(battery);
             if (c2 != null)
             {
                 c2.tempCell.Reset(c2.GridIndex_X, c2.GridIndex_Y);
             }
-            batteryLastCables.Add(c2);
+            if (!grid.batteryLastCables.Contains(c2))
+            {
+                grid.batteryLastCables.Add(c2);
+            }
         }
 
         // FIRST BATTERY ONLY
         var listOfCells = new List<GridCell>()
         {
-            batteryFirstCables[0]
+            grid.batteryFirstCables[0]
         };
 
-        bool isConnected = CanConnect(batteryFirstCables[0], cellsWithBattery[0], listOfCells, cellsWithBattery[0]);
+        bool isConnected = CanConnect(grid.batteryFirstCables[0], grid.cellsWithBattery[0], listOfCells, grid.cellsWithBattery[0]);
 
         if (isConnected)
         {
@@ -65,7 +71,7 @@ public class GridElectricityFlow : MonoBehaviour
             _Console = "not connected";
         }
 
-        foreach (var lightbulb in cellsWithLightbulbs)
+        foreach (var lightbulb in grid.cellsWithLightbulbs)
         {
             if (lightbulb.tempCell == null)
             {
@@ -89,19 +95,14 @@ public class GridElectricityFlow : MonoBehaviour
         {
             return false;
         }
-/*        if (current.tempCell == null)
-            current.tempCell.Reset(current.GridIndex_X, current.GridIndex_Y);
 
-        if (previous.tempCell == null)
-            previous.tempCell.Reset(previous.GridIndex_X, previous.GridIndex_Y);*/
-        
-        if(!previous.tempCell.next.Contains(current.tempCell))
+        if (!previous.tempCell.next.Contains(current.tempCell))
             previous.tempCell.next.Add(current.tempCell);
 
-        if(!current.tempCell.next.Contains(previous.tempCell))
+        if (!current.tempCell.next.Contains(previous.tempCell))
             current.tempCell.prev.Add(previous.tempCell);
 
-        if (current == LastCableAfterBattery(battery))
+        if (current == grid.LastCableAfterBattery(battery))
         {
             return true;
         }
@@ -115,10 +116,6 @@ public class GridElectricityFlow : MonoBehaviour
         {
             return false;
         }
-        /*else if(SurroundingCells.Count == 1)
-        {
-            return CanConnect(SurroundingCells.FirstOrDefault(), current, cellsWithMultipleConnections, battery);
-        }*/
 
         bool hasConnection = false;
 
@@ -154,22 +151,22 @@ public class GridElectricityFlow : MonoBehaviour
 
     public void FindInGrid()
     {
-        cellsWithBattery = new List<GridCell>();
-        cellsWithLightbulbs = new List<GridCell>();
+        grid.cellsWithBattery = new List<GridCell>();
+        grid.cellsWithLightbulbs = new List<GridCell>();
         foreach (var cell in grid.cells)
         {
             if (cell.connectionNode.ItemType == ItemType.Battery
                 && cell.connectionNode.isPositive)
             {
-                cellsWithBattery.Add(cell);
+                grid.cellsWithBattery.Add(cell);
             }
-            else if (cellsWithBattery.Contains(cell))
+            else if (grid.cellsWithBattery.Contains(cell))
             {
-                cellsWithBattery.Remove(cell);
+                grid.cellsWithBattery.Remove(cell);
             }
             else if (cell.connectionNode.ItemType == ItemType.Lightbulb)
             {
-                cellsWithLightbulbs.Add(cell);
+                grid.cellsWithLightbulbs.Add(cell);
             }
         }
     }
@@ -238,63 +235,4 @@ public class GridElectricityFlow : MonoBehaviour
 
         return cells;
     }
-    public GridCell FirstCableAfterBattery(GridCell battery)
-    {
-        //    1st   2nd
-        //r0: x-1   x+2
-        //r1: y-1   y+2
-        //r2: x+1   x-2
-        //r3: y+1   y-2
-        GridCell cell = null;
-        switch (grid.PlacementModeRotation)
-        {
-            case 0:
-                cell = grid.cells[battery.GridIndex_X - 1, battery.GridIndex_Y];
-                break;
-            case 1:
-                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y - 1];
-                break;
-            case 2:
-                cell = grid.cells[battery.GridIndex_X + 1, battery.GridIndex_Y];
-                break;
-            case 3:
-                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y + 1];
-                break;
-        }
-        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
-        {
-            return cell;
-        }
-        return null;
-    }
-    public GridCell LastCableAfterBattery(GridCell battery)
-    {
-        //    1st   2nd
-        //r0: x-1   x+2
-        //r1: y-1   y+2
-        //r2: x+1   x-2
-        //r3: y+1   y-2
-        GridCell cell = null;
-        switch (grid.PlacementModeRotation)
-        {
-            case 0:
-                cell = grid.cells[battery.GridIndex_X + 2, battery.GridIndex_Y];
-                break;
-            case 1:
-                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y + 2];
-                break;
-            case 2:
-                cell = grid.cells[battery.GridIndex_X - 2, battery.GridIndex_Y];
-                break;
-            case 3:
-                cell = grid.cells[battery.GridIndex_X, battery.GridIndex_Y - 2];
-                break;
-        }
-        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
-        {
-            return cell;
-        }
-        return null;
-    }
-
 }

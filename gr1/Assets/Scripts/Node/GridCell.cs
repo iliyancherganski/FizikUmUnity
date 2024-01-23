@@ -33,8 +33,6 @@ public class GridCell : MonoBehaviour
     public bool isOccupied = false;
     public bool isFree = false;
 
-
-
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "CursorPoint")
