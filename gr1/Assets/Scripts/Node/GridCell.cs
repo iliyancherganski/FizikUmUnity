@@ -210,7 +210,7 @@ public class GridCell : MonoBehaviour
                 //print("Enters Destroy thing");
                 connectionNode.DestroyNode();
             }
-            connectionNode.InstantiateLightbulbNode();
+            connectionNode.InstantiateLightbulbNode(up, left, down, right);
         }
     }
 

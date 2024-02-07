@@ -20,7 +20,7 @@ public class GridElectricityFlow : MonoBehaviour
 
     public void GridCheck()
     {
-        print("entered");
+        //print("entered");
         FindInGrid();
         ResetAllTC();
 

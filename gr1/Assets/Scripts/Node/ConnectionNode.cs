@@ -26,8 +26,10 @@ public class ConnectionNode : MonoBehaviour
 
     [Header("Lightbulb Prefabs")]
     public GameObject Lightbulb_Off;
-    public GameObject Lightbulb_ON;
     public bool isLit = false;
+
+    [Header("Switch Prefab")]
+    public GameObject SwitchPrefab;
 
     public int Rotation;
     // Start is called before the first frame update
@@ -157,31 +159,28 @@ public class ConnectionNode : MonoBehaviour
         batteryNode = this;
     }
 
-    public void InstantiateLightbulbNode()
+    public void InstantiateLightbulbNode(bool up, bool left, bool down, bool right)
     {
         ItemType = ItemType.Lightbulb;
         CurrentObject = Instantiate(Lightbulb_Off, this.transform.position, Quaternion.Euler(0, 0, 0));
+
+        LightbulbScript lightbulb = CurrentObject.GetComponent<LightbulbScript>();
+        if (lightbulb != null)
+        {
+            lightbulb.SetCorrectCablesOnLightbulb(up, left, down, right);
+        }
     }
 
     public void InstantiateLightbulb_ON_or_OFF(bool isLit)
     {
-        if (ItemType == ItemType.Lightbulb)
+        if (ItemType == ItemType.Lightbulb && CurrentObject != null)
         {
-            if (isLit)
+            LightbulbScript lightbulb = CurrentObject.GetComponent<LightbulbScript>();
+            if (lightbulb != null)
             {
-                this.isLit = true;
-                Destroy(CurrentObject);
-                CurrentObject = null;
-                CurrentObject = Instantiate(Lightbulb_ON, this.transform.position, Quaternion.Euler(0, 0, 0));
+                lightbulb.LightIsLit(isLit);
             }
-            else
-            {
-                this.isLit = false;
-                Destroy(CurrentObject);
-                CurrentObject = null;
-                CurrentObject = Instantiate(Lightbulb_Off, this.transform.position, Quaternion.Euler(0, 0, 0));
-            }
-        } 
+        }
     }
 
     public void DestroyNode()

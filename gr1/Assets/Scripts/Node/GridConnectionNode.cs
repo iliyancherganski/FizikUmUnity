@@ -158,7 +158,7 @@ public class GridConnectionNode : MonoBehaviour
     }
     public void EDITOR_FindAllSelected()
     {
-        allSelected = new List<GridCell> ();
+        allSelected = new List<GridCell>();
         for (int i = 0; i < cells.GetLength(0); i++)
         {
             for (int j = 0; j < cells.GetLength(1); j++)
@@ -268,25 +268,49 @@ public class GridConnectionNode : MonoBehaviour
             inDeleteMode = true;
         }
         //ClearSelections();
-        if (xIndex + 1 < GridSizeX && cells[xIndex + 1, yIndex].connectionNode.ItemType == ItemType.Cable)
+        if (xIndex + 1 < GridSizeX)
         {
-            //print("g1");
-            CreateAction_GridPrefab(xIndex + 1, yIndex, ItemType.Cable, false);
+            var currentCell = cells[xIndex + 1, yIndex];
+            var currentCellType = currentCell.connectionNode.ItemType;
+            //print($"cell type: {currentCellType}");
+            if (currentCellType == ItemType.Cable
+                || currentCellType == ItemType.Lightbulb)
+            {
+                CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
+            }
         }
-        if (yIndex + 1 < GridSizeY && cells[xIndex, yIndex + 1].connectionNode.ItemType == ItemType.Cable)
+        if (yIndex + 1 < GridSizeY)
         {
-            //print("g2");
-            CreateAction_GridPrefab(xIndex, yIndex + 1, ItemType.Cable, false);
+            var currentCell = cells[xIndex, yIndex + 1];
+            var currentCellType = currentCell.connectionNode.ItemType;
+            //print($"cell type: {currentCellType}");
+            if (currentCellType == ItemType.Cable
+                || currentCellType == ItemType.Lightbulb)
+            {
+                CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
+            }
         }
-        if (xIndex - 1 >= 0 && cells[xIndex - 1, yIndex].connectionNode.ItemType == ItemType.Cable)
+        if (xIndex - 1 >= 0)
         {
-            //print("g3");
-            CreateAction_GridPrefab(xIndex - 1, yIndex, ItemType.Cable, false);
+            var currentCell = cells[xIndex - 1, yIndex];
+            var currentCellType = currentCell.connectionNode.ItemType;
+            //print($"cell type: {currentCellType}");
+            if (currentCellType == ItemType.Cable
+                || currentCellType == ItemType.Lightbulb)
+            {
+                CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
+            }
         }
-        if (yIndex - 1 >= 0 && cells[xIndex, yIndex - 1].connectionNode.ItemType == ItemType.Cable)
+        if (yIndex - 1 >= 0)
         {
-            //print("g4");
-            CreateAction_GridPrefab(xIndex, yIndex - 1, ItemType.Cable, false);
+            var currentCell = cells[xIndex, yIndex - 1];
+            var currentCellType = currentCell.connectionNode.ItemType;
+            //print($"cell type: {currentCellType}");
+            if (currentCellType == ItemType.Cable
+                || currentCellType == ItemType.Lightbulb)
+            {
+                CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
+            }
         }
         inDeleteMode = false;
     }
@@ -338,10 +362,11 @@ public class GridConnectionNode : MonoBehaviour
                 }*/
                 up = true;
 
+                var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && cell.connectionNode.ItemType == ItemType.Cable)
+                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
                 {
-                    CreateAction_GridPrefab(xIndex - 1, yIndex, ItemType.Cable, false);
+                    CreateAction_GridPrefab(xIndex - 1, yIndex, itemTypeTemp, false);
                 }
             }
         }
@@ -366,10 +391,11 @@ public class GridConnectionNode : MonoBehaviour
                     }
                 }*/
                 left = true;
+                var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && cell.connectionNode.ItemType == ItemType.Cable)
+                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
                 {
-                    CreateAction_GridPrefab(xIndex, yIndex - 1, ItemType.Cable, false);
+                    CreateAction_GridPrefab(xIndex, yIndex - 1, itemTypeTemp, false);
                 }
             }
         }
@@ -395,10 +421,11 @@ public class GridConnectionNode : MonoBehaviour
                     }
                 }*/
                 down = true;
+                var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && cell.connectionNode.ItemType == ItemType.Cable)
+                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
                 {
-                    CreateAction_GridPrefab(xIndex + 1, yIndex, ItemType.Cable, false);
+                    CreateAction_GridPrefab(xIndex + 1, yIndex, itemTypeTemp, false);
 
                 }
             }
@@ -425,11 +452,12 @@ public class GridConnectionNode : MonoBehaviour
                     }
                 }*/
                 right = true;
+                var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && cell.connectionNode.ItemType == ItemType.Cable)
+                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
                 {
                     //print("Entered RIGHT");
-                    CreateAction_GridPrefab(xIndex, yIndex + 1, ItemType.Cable, false);
+                    CreateAction_GridPrefab(xIndex, yIndex + 1, itemTypeTemp, false);
                 }
             }
         }

@@ -3,5 +3,6 @@ public enum ItemType
     None,
     Cable,
     Battery,
-    Lightbulb
+    Lightbulb,
+    Switch
 }
