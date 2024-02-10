@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -192,13 +193,13 @@ public class GridCell : MonoBehaviour
         InstantiateConnectionNodePrefab();
     }
 
-    public void InstantiateCorrectPrefab(ItemType itemType, bool canBePlaced, bool up, bool left, bool down, bool right)
+    public void InstantiateCorrectPrefab(ItemType itemType, bool canBePlaced, bool up, bool left, bool down, bool right, int rotation = 0)
     {
         if (itemType == ItemType.Cable)
         {
             if (connectionNode.CurrentObject != null)
             {
-                //print("Enters Destroy thing");
+                //print("Enters Destroy CABLES");
                 connectionNode.DestroyNode();
             }
             connectionNode.InstantiateCableNode(up, left, down, right);
@@ -211,6 +212,15 @@ public class GridCell : MonoBehaviour
                 connectionNode.DestroyNode();
             }
             connectionNode.InstantiateLightbulbNode(up, left, down, right);
+        }
+        if (itemType == ItemType.Switch)
+        {
+            if (connectionNode.CurrentObject != null)
+            {
+                //print("Enters Destroy SWITCHES");
+                connectionNode.DestroyNode();
+            }
+            connectionNode.InstantiateSwitchNode(rotation, up, left, down, right);
         }
     }
 
@@ -231,5 +241,45 @@ public class GridCell : MonoBehaviour
         //print("turned off");
         isOccupied = false;
         cellStatus = CellStatus.Unselected;
+    }
+
+    public bool IsATurnedOnSwitch()
+    {
+        bool temp = false;
+        if (connectionNode.ItemType == ItemType.Switch)
+        {
+            var switchScr = connectionNode.CurrentObject.GetComponent<SwitchScript>();
+            if (switchScr != null && switchScr.isTurnedOn)
+            {
+                temp = true;
+            }
+        }
+        return temp;
+    }
+    public bool IsATurnedOffSwitch()
+    {
+        bool temp = false;
+        if (connectionNode.ItemType == ItemType.Switch)
+        {
+            var switchScr = connectionNode.CurrentObject.GetComponent<SwitchScript>();
+            if (switchScr != null && !switchScr.isTurnedOn)
+            {
+                temp = true;
+            }
+        }
+        return temp;
+    }
+
+    public void IfSwitchAndOn_TurnOnLight(bool hasElectricity)
+    {
+        if (connectionNode.ItemType == ItemType.Switch)
+        {
+            var switchScr = connectionNode.CurrentObject.GetComponent<SwitchScript>();
+            if (switchScr != null)
+            {
+                //print($"IT IS {hasElectricity}");
+                switchScr.HasFlowingElectricity(hasElectricity);
+            }
+        }
     }
 }

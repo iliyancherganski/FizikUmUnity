@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -171,7 +172,7 @@ public class ConnectionNode : MonoBehaviour
         }
     }
 
-    public void InstantiateLightbulb_ON_or_OFF(bool isLit)
+    public void SetLightbulb_ON_or_OFF(bool isLit)
     {
         if (ItemType == ItemType.Lightbulb && CurrentObject != null)
         {
@@ -193,4 +194,58 @@ public class ConnectionNode : MonoBehaviour
         //print("reaches here");
         ItemType = ItemType.None;
     }
+
+    public void InstantiateSwitchNode(int rotation, bool up, bool left, bool down, bool right)
+    {
+        ItemType = ItemType.Switch;
+        CurrentObject = Instantiate(SwitchPrefab, this.transform.position, Quaternion.Euler(0, rotation * 90, 0));
+        Rotation = rotation;
+
+        SwitchScript switchScr = CurrentObject.GetComponent<SwitchScript>();
+        if (switchScr != null)
+        {
+            bool[] directions = new bool[4]
+            {
+                false,false, false, false
+            };
+
+            // i = 2, r = 2 curr = 4 -> curr = i-r = 0
+            // i = 3, r = 2 curr = 5 -> curr = i-r = 1
+
+            // i = 2, r = 3 curr = 5 -> curr = i-r = 1
+            // i = 1, r = 3 curr = 4 -> curr = i-r = 0
+
+            int curr = 0 + Rotation;
+            if (curr > 3)
+            {
+                curr -= 4;
+            }
+            directions[curr] = up;
+
+            curr = 1 + Rotation;
+            if (curr > 3)
+            {
+                curr -= 4;
+            }
+            directions[curr] = left;
+
+            curr = 2 + Rotation;
+            if (curr > 3)
+            {
+                curr -= 4;
+            }
+            directions[curr] = down;
+
+            curr = 3 + Rotation;
+            if (curr > 3)
+            {
+                curr -= 4;
+            }
+            directions[curr] = right;
+
+            switchScr.SetCorrectCablesOnSwitch(directions);
+        }
+    }
+
+
 }

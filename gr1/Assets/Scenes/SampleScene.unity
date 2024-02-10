@@ -576,8 +576,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flow: {fileID: 574298043}
-  GridSizeX: 30
-  GridSizeY: 30
+  GridSizeX: 15
+  GridSizeY: 15
   CAMERA: {fileID: 1636861806}
   TableGO: {fileID: 8296172668878810436}
   GridCell: {fileID: 1692001243987663750, guid: 8bf9eb89795b2c74f8e2d987cc10103d,
@@ -591,6 +591,7 @@ MonoBehaviour:
   deleteKey: 99
   rotateItemKey: 114
   placeLightbulbKey: 51
+  placeSwitchKey: 52
   cellsWithBattery: []
   cellsWithLightbulbs: []
   batteryFirstCables: []
@@ -1946,18 +1947,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 573044811283122234, guid: 57584d783376d4f47ba653407331e3c1,
-        type: 3}
-      propertyPath: Lightbulb_Off
-      value: 
-      objectReference: {fileID: 8233234427521714885, guid: b6626b81d00aaf7429fcedb81424e830,
-        type: 3}
-    - target: {fileID: 573044811283122234, guid: 57584d783376d4f47ba653407331e3c1,
-        type: 3}
-      propertyPath: Lightbulb_ON
-      value: 
-      objectReference: {fileID: 8014502911132049867, guid: 0577348d9f9a6d14abb54c32b3af860c,
-        type: 3}
     - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1972,11 +1961,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
         type: 3}
@@ -1995,6 +1979,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -2008,11 +2002,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4534068720264871805, guid: 57584d783376d4f47ba653407331e3c1,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 7281208209587075236, guid: 57584d783376d4f47ba653407331e3c1,
         type: 3}
       propertyPath: m_Name
@@ -2021,7 +2010,7 @@ PrefabInstance:
     - target: {fileID: 7281208209587075236, guid: 57584d783376d4f47ba653407331e3c1,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57584d783376d4f47ba653407331e3c1, type: 3}

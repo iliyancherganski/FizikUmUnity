@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 public class GridConnectionNode : MonoBehaviour
@@ -22,13 +24,16 @@ public class GridConnectionNode : MonoBehaviour
     [Header("Keybinds")]
     public KeyCode placeCableKey = KeyCode.Alpha1;
     public KeyCode placeBatteryKey = KeyCode.Alpha2;
+    public KeyCode placeLightbulbKey = KeyCode.Alpha3;
+    public KeyCode placeSwitchKey = KeyCode.Alpha4;
     public KeyCode deleteKey = KeyCode.C;
     public KeyCode rotateItemKey = KeyCode.R;
-    public KeyCode placeLightbulbKey = KeyCode.Alpha3;
+    public KeyCode interactKey = KeyCode.E;
 
     [Header("Battery components")]
     public List<GridCell> cellsWithBattery = new List<GridCell>();
     public List<GridCell> cellsWithLightbulbs = new List<GridCell>();
+    public List<GridCell> cellsWithSwitches = new List<GridCell>();
     public List<GridCell> batteryFirstCables = new List<GridCell>();
     public List<GridCell> batteryLastCables = new List<GridCell>();
 
@@ -63,6 +68,8 @@ public class GridConnectionNode : MonoBehaviour
         {
             foreach (var item in cells)
             {
+                Destroy(item.connectionNode.CurrentObject);
+                Destroy(item.connectionNode);
                 Destroy(item);
             }
             GenerateGrid();
@@ -70,6 +77,11 @@ public class GridConnectionNode : MonoBehaviour
         if (Input.GetKeyDown(placeBatteryKey))
         {
             PlacementModeItemType = ItemType.Battery;
+            inPlacementMode = true;
+        }
+        else if (Input.GetKeyDown(placeSwitchKey))
+        {
+            PlacementModeItemType = ItemType.Switch;
             inPlacementMode = true;
         }
         if (!inPlacementMode)
@@ -85,6 +97,12 @@ public class GridConnectionNode : MonoBehaviour
                 FindAllSelectedGridCells(ItemType.Lightbulb, ActionType.Create);
                 flow.GridCheck();
             }
+            if (Input.GetKeyDown(interactKey))
+            {
+                FindAllSelectedGridCells(ItemType.Lightbulb, ActionType.Interact);
+                flow.GridCheck();
+            }
+
             // DELETE
             if (Input.GetKeyDown(deleteKey))
             {
@@ -151,6 +169,10 @@ public class GridConnectionNode : MonoBehaviour
                     else if (actionType == ActionType.Delete)
                     {
                         DeleteAction_GridPrefab(i, j);
+                    }
+                    else if (actionType == ActionType.Interact)
+                    {
+                        InteractWithSelectedGridCells();
                     }
                 }
             }
@@ -234,8 +256,19 @@ public class GridConnectionNode : MonoBehaviour
                 if (count == length && !cellArray.Any(x => x.isOccupied))
                 {
                     //print("can be placed");
-
-                    Create_Battery_With_2Cables(cellArray);
+                    switch (PlacementModeItemType)
+                    {
+                        case ItemType.Battery:
+                            Create_Battery_With_2Cables(cellArray);
+                            break;
+                        case ItemType.Switch:
+                            cells[xIndex, yIndex].cellStatus = CellStatus.Selected;
+                            CreateAction_GridPrefab(xIndex, yIndex, ItemType.Switch, true);
+                            ClearSelections();
+                            break;
+                        default:
+                            break;
+                    }
                     flow.GridCheck();
                 }
                 else
@@ -274,7 +307,8 @@ public class GridConnectionNode : MonoBehaviour
             var currentCellType = currentCell.connectionNode.ItemType;
             //print($"cell type: {currentCellType}");
             if (currentCellType == ItemType.Cable
-                || currentCellType == ItemType.Lightbulb)
+                || currentCellType == ItemType.Lightbulb
+                || currentCellType == ItemType.Switch)
             {
                 CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
             }
@@ -285,7 +319,8 @@ public class GridConnectionNode : MonoBehaviour
             var currentCellType = currentCell.connectionNode.ItemType;
             //print($"cell type: {currentCellType}");
             if (currentCellType == ItemType.Cable
-                || currentCellType == ItemType.Lightbulb)
+                || currentCellType == ItemType.Lightbulb
+                || currentCellType == ItemType.Switch)
             {
                 CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
             }
@@ -296,7 +331,8 @@ public class GridConnectionNode : MonoBehaviour
             var currentCellType = currentCell.connectionNode.ItemType;
             //print($"cell type: {currentCellType}");
             if (currentCellType == ItemType.Cable
-                || currentCellType == ItemType.Lightbulb)
+                || currentCellType == ItemType.Lightbulb
+                || currentCellType == ItemType.Switch)
             {
                 CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
             }
@@ -307,7 +343,8 @@ public class GridConnectionNode : MonoBehaviour
             var currentCellType = currentCell.connectionNode.ItemType;
             //print($"cell type: {currentCellType}");
             if (currentCellType == ItemType.Cable
-                || currentCellType == ItemType.Lightbulb)
+                || currentCellType == ItemType.Lightbulb
+                || currentCellType == ItemType.Switch)
             {
                 CreateAction_GridPrefab(currentCell.GridIndex_X, currentCell.GridIndex_Y, currentCellType, false);
             }
@@ -364,7 +401,9 @@ public class GridConnectionNode : MonoBehaviour
 
                 var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
+                    && (itemTypeTemp == ItemType.Cable
+                    || itemTypeTemp == ItemType.Lightbulb
+                    || itemTypeTemp == ItemType.Switch))
                 {
                     CreateAction_GridPrefab(xIndex - 1, yIndex, itemTypeTemp, false);
                 }
@@ -393,7 +432,9 @@ public class GridConnectionNode : MonoBehaviour
                 left = true;
                 var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
+                    && (itemTypeTemp == ItemType.Cable
+                    || itemTypeTemp == ItemType.Lightbulb
+                    || itemTypeTemp == ItemType.Switch))
                 {
                     CreateAction_GridPrefab(xIndex, yIndex - 1, itemTypeTemp, false);
                 }
@@ -423,7 +464,9 @@ public class GridConnectionNode : MonoBehaviour
                 down = true;
                 var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
+                    && (itemTypeTemp == ItemType.Cable
+                    || itemTypeTemp == ItemType.Lightbulb
+                    || itemTypeTemp == ItemType.Switch))
                 {
                     CreateAction_GridPrefab(xIndex + 1, yIndex, itemTypeTemp, false);
 
@@ -454,7 +497,9 @@ public class GridConnectionNode : MonoBehaviour
                 right = true;
                 var itemTypeTemp = cell.connectionNode.ItemType;
                 if (firstLoop && cell.cellStatus != CellStatus.Selected
-                    && (itemTypeTemp == ItemType.Cable || itemTypeTemp == ItemType.Lightbulb))
+                    && (itemTypeTemp == ItemType.Cable
+                    || itemTypeTemp == ItemType.Lightbulb
+                    || itemTypeTemp == ItemType.Switch))
                 {
                     //print("Entered RIGHT");
                     CreateAction_GridPrefab(xIndex, yIndex + 1, itemTypeTemp, false);
@@ -463,13 +508,22 @@ public class GridConnectionNode : MonoBehaviour
         }
 
         //print($"row{xIndex} col{yIndex}" + Environment.NewLine + $"Up:{up}  Left:{left}  Down:{down}  Right:{right}");
+        var rotation = 0;
+        var currCell = cells[xIndex, yIndex].connectionNode;
+        if (currCell.ItemType == ItemType.Switch)
+        {
+            rotation = currCell.Rotation;
+            //print("SWITCH");
+        }
+        else rotation = PlacementModeRotation;
 
-        cells[xIndex, yIndex].InstantiateCorrectPrefab(itemType, canBePlaced, up, left, down, right);
+        cells[xIndex, yIndex].InstantiateCorrectPrefab(itemType, canBePlaced, up, left, down, right, rotation);
         /*if (wasSelected)
         {
             cells[xIndex, yIndex].cellStatus = CellStatus.Selected;
         }*/
         flow.GridCheck();
+
     }
 
     public void Create_Battery_With_2Cables(GridCell[] cellArray)
@@ -609,6 +663,27 @@ public class GridConnectionNode : MonoBehaviour
             return cell;
         }
         return null;
+    }
+
+    public void InteractWithSelectedGridCells()
+    {
+        foreach (var cell in allSelected
+            .Where(x => x.connectionNode.CurrentObject != null
+            && x.connectionNode.ItemType == ItemType.Switch))
+        {
+            SwitchScript switchScr = cell.connectionNode.CurrentObject.GetComponent<SwitchScript>();
+            if (switchScr != null)
+            {
+                if (!switchScr.isTurnedOn)
+                {
+                    switchScr.ButtonIsOn(true);
+                }
+                else
+                {
+                    switchScr.ButtonIsOn(false);
+                }
+            }
+        }
     }
 }
 /*

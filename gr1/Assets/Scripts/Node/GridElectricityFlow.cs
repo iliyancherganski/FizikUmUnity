@@ -71,6 +71,15 @@ public class GridElectricityFlow : MonoBehaviour
             _Console = "not connected";
         }
 
+        RemoveDublicatedPrevsAndNexts();
+
+        bool hasShortCurcuit = HasShortCircuit(grid.batteryFirstCables[0], new List<GridCell>(), grid.cellsWithBattery[0]);
+
+        if (hasShortCurcuit)
+        {
+            print("HAS SHORT CIRCUT");
+        }
+
         foreach (var lightbulb in grid.cellsWithLightbulbs)
         {
             if (lightbulb.tempCell == null)
@@ -78,28 +87,53 @@ public class GridElectricityFlow : MonoBehaviour
                 continue;
             }
             if (lightbulb.tempCell.prev.Count > 0
-                && lightbulb.tempCell.next.Count > 0)
+                && lightbulb.tempCell.next.Count > 0
+                && !hasShortCurcuit)
             {
-                lightbulb.connectionNode.InstantiateLightbulb_ON_or_OFF(true);
+                lightbulb.connectionNode.SetLightbulb_ON_or_OFF(true);
             }
             else
             {
-                lightbulb.connectionNode.InstantiateLightbulb_ON_or_OFF(false);
+                lightbulb.connectionNode.SetLightbulb_ON_or_OFF(false);
             }
         }
+
+        foreach (var sw in grid.cellsWithSwitches)
+        {
+            if (sw.tempCell == null)
+            {
+                continue;
+            }
+            if (sw.tempCell.prev.Count > 0
+                && sw.tempCell.next.Count > 0
+                && hasShortCurcuit)
+            {
+                sw.IfSwitchAndOn_TurnOnLight(true);
+            }
+            else
+            {
+                sw.IfSwitchAndOn_TurnOnLight(false);
+            }
+        }
+
+
     }
 
     public bool CanConnect(GridCell current, GridCell previous, List<GridCell> cellsWithMultipleConnections, GridCell battery)
     {
-        if (current == null || previous == null)
+        if (current == null 
+            || previous == null
+            || current.IsATurnedOffSwitch())
         {
             return false;
         }
 
-        if (!previous.tempCell.next.Contains(current.tempCell))
+        if (!previous.tempCell.next.Contains(current.tempCell)
+            && !previous.tempCell.prev.Contains(current.tempCell))
             previous.tempCell.next.Add(current.tempCell);
 
-        if (!current.tempCell.next.Contains(previous.tempCell))
+        if (!current.tempCell.next.Contains(previous.tempCell)
+            && !previous.tempCell.prev.Contains(previous.tempCell))
             current.tempCell.prev.Add(previous.tempCell);
 
         if (current == grid.LastCableAfterBattery(battery))
@@ -149,10 +183,51 @@ public class GridElectricityFlow : MonoBehaviour
 
     }
 
+    public bool HasShortCircuit(GridCell current, List<GridCell> allPrevious, GridCell battery)
+    {
+        var connections = new List<GridCell>();
+        foreach (var c in allPrevious)
+        {
+            connections.Add(c);
+        }
+        connections.Add(current);
+        bool hasSC = false;
+        if (current == grid.LastCableAfterBattery(battery))
+        {
+            if (connections
+                .Where(x=>x.connectionNode.ItemType == ItemType.Lightbulb
+                || x.IsATurnedOffSwitch()).ToList().Count() == 0)
+            {
+                hasSC = true;
+            }
+        }
+        foreach (var cell in current.tempCell.next)
+        {
+            if (HasShortCircuit(grid.cells[cell.X, cell.Y], connections, battery))
+            {
+                hasSC = true;
+            }
+        }
+        return hasSC;        
+    }
+
+    public void RemoveDublicatedPrevsAndNexts()
+    {
+        foreach (var cell in grid.cells)
+        {
+            if (cell.tempCell != null)
+            {
+                cell.tempCell.prev = cell.tempCell.prev.Distinct().ToList();
+                cell.tempCell.next = cell.tempCell.next.Distinct().ToList();
+            }
+        }
+    }
+
     public void FindInGrid()
     {
         grid.cellsWithBattery = new List<GridCell>();
         grid.cellsWithLightbulbs = new List<GridCell>();
+        grid.cellsWithSwitches = new List<GridCell>();
         foreach (var cell in grid.cells)
         {
             if (cell.connectionNode.ItemType == ItemType.Battery
@@ -167,6 +242,10 @@ public class GridElectricityFlow : MonoBehaviour
             else if (cell.connectionNode.ItemType == ItemType.Lightbulb)
             {
                 grid.cellsWithLightbulbs.Add(cell);
+            }
+            else if (cell.connectionNode.ItemType == ItemType.Switch)
+            {
+                grid.cellsWithSwitches.Add(cell);
             }
         }
     }

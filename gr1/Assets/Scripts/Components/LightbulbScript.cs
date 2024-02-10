@@ -51,6 +51,5 @@ public class LightbulbScript : MonoBehaviour
             Light.SetActive(false);
             renderer.material = LightMaterialOFF;
         }
-
     }
 }

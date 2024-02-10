@@ -74,7 +74,7 @@ MonoBehaviour:
   isPositive: 0
   Lightbulb_Off: {fileID: 8233234427521714885, guid: b6626b81d00aaf7429fcedb81424e830,
     type: 3}
-  Lightbulb_ON: {fileID: 8014502911132049867, guid: 0577348d9f9a6d14abb54c32b3af860c,
-    type: 3}
   isLit: 0
+  SwitchPrefab: {fileID: 8446441283614260536, guid: 142c441123e6e8246a4cb2733c0c1dbc,
+    type: 3}
   Rotation: 0
