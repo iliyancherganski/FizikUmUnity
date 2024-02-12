@@ -13,8 +13,8 @@ public class GridElectricityFlow : MonoBehaviour
 
     // List of batteries -> First GC is for +charge, the second one is for -charge
     //public List<Tuple<GridCell, GridCell>> cellsWithBattery = new List<Tuple<GridCell, GridCell>>();
+    public int recursionCycling;
 
-    
 
     public string _Console;
 
@@ -106,7 +106,7 @@ public class GridElectricityFlow : MonoBehaviour
             }
             if (sw.tempCell.prev.Count > 0
                 && sw.tempCell.next.Count > 0
-                && hasShortCurcuit)
+                && !hasShortCurcuit)
             {
                 sw.IfSwitchAndOn_TurnOnLight(true);
             }
@@ -121,19 +121,17 @@ public class GridElectricityFlow : MonoBehaviour
 
     public bool CanConnect(GridCell current, GridCell previous, List<GridCell> cellsWithMultipleConnections, GridCell battery)
     {
-        if (current == null 
+        if (current == null
             || previous == null
             || current.IsATurnedOffSwitch())
         {
             return false;
         }
 
-        if (!previous.tempCell.next.Contains(current.tempCell)
-            && !previous.tempCell.prev.Contains(current.tempCell))
+        if (!previous.tempCell.next.Contains(current.tempCell))
             previous.tempCell.next.Add(current.tempCell);
 
-        if (!current.tempCell.next.Contains(previous.tempCell)
-            && !previous.tempCell.prev.Contains(previous.tempCell))
+        if (!current.tempCell.prev.Contains(previous.tempCell))
             current.tempCell.prev.Add(previous.tempCell);
 
         if (current == grid.LastCableAfterBattery(battery))
@@ -195,7 +193,7 @@ public class GridElectricityFlow : MonoBehaviour
         if (current == grid.LastCableAfterBattery(battery))
         {
             if (connections
-                .Where(x=>x.connectionNode.ItemType == ItemType.Lightbulb
+                .Where(x => x.connectionNode.ItemType == ItemType.Lightbulb
                 || x.IsATurnedOffSwitch()).ToList().Count() == 0)
             {
                 hasSC = true;
@@ -208,7 +206,7 @@ public class GridElectricityFlow : MonoBehaviour
                 hasSC = true;
             }
         }
-        return hasSC;        
+        return hasSC;
     }
 
     public void RemoveDublicatedPrevsAndNexts()

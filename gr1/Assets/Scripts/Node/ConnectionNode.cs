@@ -155,8 +155,10 @@ public class ConnectionNode : MonoBehaviour
         {
             CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, 0, 0));
         }*/
+
+        Rotation = rotation;
         ItemType = ItemType.Battery;
-        CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, rotation * -90, 0));
+        CurrentObject = Instantiate(Battery1, this.transform.position, Quaternion.Euler(0, Rotation * -90, 0));
         batteryNode = this;
     }
 

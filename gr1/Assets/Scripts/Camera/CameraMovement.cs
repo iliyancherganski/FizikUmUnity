@@ -26,7 +26,7 @@ public class CameraMovement : MonoBehaviour
     public float scrollSensitivity = 1f;
 
     [Header("Keybinds")]
-    public KeyCode ResetCameraPositionKey = KeyCode.P;
+    public KeyCode ResetCameraPositionKey = KeyCode.O;
     public KeyCode SpeedUpCameraKey = KeyCode.Space;
 
     private float currentXRotation = 0f;

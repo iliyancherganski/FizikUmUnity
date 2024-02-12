@@ -70,7 +70,7 @@ public class GridConnectionNode : MonoBehaviour
             {
                 Destroy(item.connectionNode.CurrentObject);
                 Destroy(item.connectionNode);
-                Destroy(item);
+                Destroy(item.gameObject);
             }
             GenerateGrid();
         }
@@ -269,7 +269,7 @@ public class GridConnectionNode : MonoBehaviour
                         default:
                             break;
                     }
-                    flow.GridCheck();
+                    //flow.GridCheck();
                 }
                 else
                 {
@@ -522,7 +522,10 @@ public class GridConnectionNode : MonoBehaviour
         {
             cells[xIndex, yIndex].cellStatus = CellStatus.Selected;
         }*/
-        flow.GridCheck();
+       /* if (firstLoop)
+        {
+            flow.GridCheck();
+        }*/
 
     }
 
@@ -613,25 +616,28 @@ public class GridConnectionNode : MonoBehaviour
         //r1: y-1   y+2
         //r2: x+1   x-2
         //r3: y+1   y-2
-        GridCell cell = null;
-        switch (PlacementModeRotation)
+        if (battery.connectionNode.ItemType == ItemType.Battery)
         {
-            case 0:
-                cell = cells[battery.GridIndex_X - 1, battery.GridIndex_Y];
-                break;
-            case 1:
-                cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 1];
-                break;
-            case 2:
-                cell = cells[battery.GridIndex_X + 1, battery.GridIndex_Y];
-                break;
-            case 3:
-                cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 1];
-                break;
-        }
-        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
-        {
-            return cell;
+            GridCell cell = null;
+            switch (battery.connectionNode.Rotation)
+            {
+                case 0:
+                    cell = cells[battery.GridIndex_X - 1, battery.GridIndex_Y];
+                    break;
+                case 1:
+                    cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 1];
+                    break;
+                case 2:
+                    cell = cells[battery.GridIndex_X + 1, battery.GridIndex_Y];
+                    break;
+                case 3:
+                    cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 1];
+                    break;
+            }
+            if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
+            {
+                return cell;
+            }
         }
         return null;
     }
@@ -642,25 +648,28 @@ public class GridConnectionNode : MonoBehaviour
         //r1: y-1   y+2
         //r2: x+1   x-2
         //r3: y+1   y-2
-        GridCell cell = null;
-        switch (PlacementModeRotation)
+        if (battery.connectionNode.ItemType == ItemType.Battery)
         {
-            case 0:
-                cell = cells[battery.GridIndex_X + 2, battery.GridIndex_Y];
-                break;
-            case 1:
-                cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 2];
-                break;
-            case 2:
-                cell = cells[battery.GridIndex_X - 2, battery.GridIndex_Y];
-                break;
-            case 3:
-                cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 2];
-                break;
-        }
-        if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
-        {
-            return cell;
+            GridCell cell = null;
+            switch (battery.connectionNode.Rotation)
+            {
+                case 0:
+                    cell = cells[battery.GridIndex_X + 2, battery.GridIndex_Y];
+                    break;
+                case 1:
+                    cell = cells[battery.GridIndex_X, battery.GridIndex_Y + 2];
+                    break;
+                case 2:
+                    cell = cells[battery.GridIndex_X - 2, battery.GridIndex_Y];
+                    break;
+                case 3:
+                    cell = cells[battery.GridIndex_X, battery.GridIndex_Y - 2];
+                    break;
+            }
+            if (cell != null && cell.connectionNode.ItemType == ItemType.Cable)
+            {
+                return cell;
+            }
         }
         return null;
     }

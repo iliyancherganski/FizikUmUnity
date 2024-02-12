@@ -193,7 +193,7 @@ public class GridCell : MonoBehaviour
         InstantiateConnectionNodePrefab();
     }
 
-    public void InstantiateCorrectPrefab(ItemType itemType, bool canBePlaced, bool up, bool left, bool down, bool right, int rotation = 0)
+    public void InstantiateCorrectPrefab(ItemType itemType, bool canBePlaced, bool up, bool left, bool down, bool right, int rotation)
     {
         if (itemType == ItemType.Cable)
         {
