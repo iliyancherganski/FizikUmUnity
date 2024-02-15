@@ -74,6 +74,7 @@ public class GridElectricityFlow : MonoBehaviour
         RemoveDublicatedPrevsAndNexts();
 
         bool hasShortCurcuit = HasShortCircuit(grid.batteryFirstCables[0], new List<GridCell>(), grid.cellsWithBattery[0]);
+        //bool hasShortCurcuit = false;
 
         if (hasShortCurcuit)
         {
@@ -128,10 +129,13 @@ public class GridElectricityFlow : MonoBehaviour
             return false;
         }
 
-        if (!previous.tempCell.next.Contains(current.tempCell))
+        if (!previous.tempCell.next.Contains(current.tempCell) && 
+            !previous.tempCell.prev.Contains(current.tempCell))
             previous.tempCell.next.Add(current.tempCell);
 
-        if (!current.tempCell.prev.Contains(previous.tempCell))
+        if (!current.tempCell.prev.Contains(previous.tempCell) &&
+            !current.tempCell.next.Contains(previous.tempCell))
+
             current.tempCell.prev.Add(previous.tempCell);
 
         if (current == grid.LastCableAfterBattery(battery))
@@ -162,7 +166,8 @@ public class GridElectricityFlow : MonoBehaviour
         {
             bool currentIsConnected = false;
 
-            if (connections.Contains(cell))
+            if (connections.Contains(cell)
+                || (cell.connectionNode.batteryNode != null && cell.connectionNode.batteryNode == battery.connectionNode.batteryNode))
             {
                 continue;
             }
