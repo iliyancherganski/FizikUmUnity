@@ -109,7 +109,7 @@ public class GridConnectionNode : MonoBehaviour
             }
 
             // DELETE
-            if (Input.GetKeyDown(deleteKey) && !Input.GetKey(KeyCode.LeftControl))
+            if (Input.GetKeyDown(deleteKey) && !Input.GetKey(KeyCode.LeftShift))
             {
                 // Item type here does not matter beacuse the action type is delete.
                 FindAllSelectedGridCells(ItemType.Cable, ActionType.Delete);
