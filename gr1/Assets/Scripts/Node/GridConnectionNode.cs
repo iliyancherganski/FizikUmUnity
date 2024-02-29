@@ -59,12 +59,12 @@ public class GridConnectionNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C))
         {
             print("Exporting grid...");
             importExport.GridExport();
         }
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.V))
         {
 
         }

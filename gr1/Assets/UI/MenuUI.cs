@@ -25,14 +25,14 @@ public class MenuUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.V) && !importMenuIsOpened)
         {
             ImportSimulationMenu();
             importMenuIsOpened = true;
         }
-        else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
+        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C))
         {
-            messageBox.text = "Симуацията е копирана във формат JSON.";
+            messageBox.text = "Симуацията е копирана.";
             Invoke(nameof(MessageBoxClearInvoke), 4);
         }
 
