@@ -9,6 +9,7 @@ public class GridConnectionNode : MonoBehaviour
 {
     public GridElectricityFlow flow;
     public GridCell[,] cells;
+    public ImportExportGridScript importExport;
 
     public int GridSizeX;
     public int GridSizeY;
@@ -58,21 +59,25 @@ public class GridConnectionNode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
+        {
+            print("Exporting grid...");
+            importExport.GridExport(this);
+        }
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
+        {
+
+        }
         EDITOR_FindAllSelected();
         KeybindInput();
+
     }
 
     public void KeybindInput()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            foreach (var item in cells)
-            {
-                Destroy(item.connectionNode.CurrentObject);
-                Destroy(item.connectionNode);
-                Destroy(item.gameObject);
-            }
-            GenerateGrid();
+            RegenerateGrid();
         }
         if (Input.GetKeyDown(placeBatteryKey))
         {
@@ -87,24 +92,24 @@ public class GridConnectionNode : MonoBehaviour
         if (!inPlacementMode)
         {
             // PLACE CABLE
-            if (Input.GetKeyDown(placeCableKey))
+            if (Input.GetKeyDown(placeCableKey) && !Input.GetKey(KeyCode.LeftControl))
             {
                 FindAllSelectedGridCells(ItemType.Cable, ActionType.Create);
                 flow.GridCheck();
             }
-            if (Input.GetKeyDown(placeLightbulbKey))
+            if (Input.GetKeyDown(placeLightbulbKey) && !Input.GetKey(KeyCode.LeftControl))
             {
                 FindAllSelectedGridCells(ItemType.Lightbulb, ActionType.Create);
                 flow.GridCheck();
             }
-            if (Input.GetKeyDown(interactKey))
+            if (Input.GetKeyDown(interactKey) && !Input.GetKey(KeyCode.LeftControl))
             {
                 FindAllSelectedGridCells(ItemType.Lightbulb, ActionType.Interact);
                 flow.GridCheck();
             }
 
             // DELETE
-            if (Input.GetKeyDown(deleteKey))
+            if (Input.GetKeyDown(deleteKey) && !Input.GetKey(KeyCode.LeftControl))
             {
                 // Item type here does not matter beacuse the action type is delete.
                 FindAllSelectedGridCells(ItemType.Cable, ActionType.Delete);
@@ -124,6 +129,17 @@ public class GridConnectionNode : MonoBehaviour
             // PLACE BATTERY
             TryCreateAction_GridPrefab();
         }
+    }
+
+    public void RegenerateGrid()
+    {
+        foreach (var item in cells)
+        {
+            Destroy(item.connectionNode.CurrentObject);
+            Destroy(item.connectionNode);
+            Destroy(item.gameObject);
+        }
+        GenerateGrid();
     }
 
     public void GenerateGrid()

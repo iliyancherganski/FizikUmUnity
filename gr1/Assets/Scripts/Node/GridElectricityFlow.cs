@@ -14,6 +14,8 @@ public class GridElectricityFlow : MonoBehaviour
     // List of batteries -> First GC is for +charge, the second one is for -charge
     //public List<Tuple<GridCell, GridCell>> cellsWithBattery = new List<Tuple<GridCell, GridCell>>();
     public int recursionCycling;
+    public GameObject shortCircuitParticlePrefab;
+    public List<GameObject> shortCircuitParticles = new List<GameObject>();
 
 
     public string _Console;
@@ -78,7 +80,23 @@ public class GridElectricityFlow : MonoBehaviour
 
         if (hasShortCurcuit)
         {
+            var particle1 = Instantiate(shortCircuitParticlePrefab, grid.cellsWithBattery[0].transform, false);
+            //var particle2 = Instantiate(shortCircuitParticlePrefab, grid.batteryLastCables[0].transform, false);
+
+            shortCircuitParticles.Add(particle1);
+            //shortCircuitParticles.Add(particle2);
+
             print("HAS SHORT CIRCUT");
+        }
+        else
+        {
+            for (int i = 0; i < shortCircuitParticles.Count; i++)
+            {
+                Destroy(shortCircuitParticles[i]);
+                shortCircuitParticles.RemoveAt(i);
+                i--;
+            }
+            shortCircuitParticles = new List<GameObject>();
         }
 
         foreach (var lightbulb in grid.cellsWithLightbulbs)
@@ -129,24 +147,34 @@ public class GridElectricityFlow : MonoBehaviour
             return false;
         }
 
-        if (!previous.tempCell.next.Contains(current.tempCell) && 
+        if (!previous.tempCell.next.Contains(current.tempCell) &&
             !previous.tempCell.prev.Contains(current.tempCell))
             previous.tempCell.next.Add(current.tempCell);
 
         if (!current.tempCell.prev.Contains(previous.tempCell) &&
             !current.tempCell.next.Contains(previous.tempCell))
-
             current.tempCell.prev.Add(previous.tempCell);
-
-        if (current == grid.LastCableAfterBattery(battery))
-        {
-            return true;
-        }
 
         var SurroundingCells = FindSurroundingCells(current)
             .Where(x => x != null
                      && x != previous
                      && x.connectionNode.ItemType != ItemType.None).ToList();
+
+        if (current == grid.LastCableAfterBattery(battery))
+        {
+            var batteryCell = SurroundingCells
+                .FirstOrDefault(x => x.connectionNode.batteryNode != null
+                                && x.connectionNode.batteryNode == battery.connectionNode.batteryNode);
+            if (!batteryCell.tempCell.prev.Contains(current.tempCell))
+            {
+                batteryCell.tempCell.prev.Add(current.tempCell);
+            }
+            if (!current.tempCell.next.Contains(batteryCell.tempCell))
+            {
+                current.tempCell.next.Add(batteryCell.tempCell);
+            }
+            return true;
+        }
 
         if (SurroundingCells.Count == 0)
         {
@@ -197,21 +225,32 @@ public class GridElectricityFlow : MonoBehaviour
         bool hasSC = false;
         if (current == grid.LastCableAfterBattery(battery))
         {
-            if (connections
-                .Where(x => x.connectionNode.ItemType == ItemType.Lightbulb
-                || x.IsATurnedOffSwitch()).ToList().Count() == 0)
+            int count = connections
+                .Where(x => x.connectionNode.Ohms > 0
+                || x.IsATurnedOffSwitch()).ToList().Count();
+
+            //print(string.Join(", ", connections.Select(x=>x.connectionNode.Ohms)));
+            if (count == 0)
             {
-                hasSC = true;
+                return true;
             }
         }
         foreach (var cell in current.tempCell.next)
         {
-            if (HasShortCircuit(grid.cells[cell.X, cell.Y], connections, battery))
+            hasSC = HasShortCircuit(grid.cells[cell.X, cell.Y], connections, battery);
+            /*if (HasShortCircuit(grid.cells[cell.X, cell.Y], connections, battery))
             {
                 hasSC = true;
-            }
+            }*/
         }
         return hasSC;
+    }
+
+    public void DistributeCorrectAmpersOnNodes(GridCell current, GridCell battery, float currAmpers)
+    {
+
+        var tempCell = current.tempCell;
+
     }
 
     public void RemoveDublicatedPrevsAndNexts()

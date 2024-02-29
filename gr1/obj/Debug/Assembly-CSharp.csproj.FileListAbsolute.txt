@@ -270,3 +270,5 @@ C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\obj\Debug\Assembly-CSharp.csproj
 C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\obj\Debug\Assembly-CSharp.dll
 C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\Temp\bin\Debug\UnityEngine.WebGLModule.dll
+C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1\Temp\bin\Debug\UnityEngine.WebGLModule.pdb

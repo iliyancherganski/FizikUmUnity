@@ -13,6 +13,7 @@ public class ConnectionNode : MonoBehaviour
     public ConnectionNode[] NextConnection = new ConnectionNode[4];
 
     public GameObject CurrentObject;
+    public int Rotation;
 
     [Header("Cable Prefabs")]
     public GameObject cableUpRightPrefab_2;
@@ -32,7 +33,10 @@ public class ConnectionNode : MonoBehaviour
     [Header("Switch Prefab")]
     public GameObject SwitchPrefab;
 
-    public int Rotation;
+    [Header("Physical constants")]
+    public float Ampers;
+    public float Ohms;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +50,15 @@ public class ConnectionNode : MonoBehaviour
         {
             ItemType = ItemType.None;
         }
+
+        /*if (ItemType == ItemType.Lightbulb)
+        {
+            Ohms = 10.0f;
+        }
+        else
+        {
+            Ohms = 0.0f;
+        }*/
     }
 
     public void InstantiateCableNode(bool up, bool left, bool down, bool right)
@@ -166,6 +179,7 @@ public class ConnectionNode : MonoBehaviour
     {
         ItemType = ItemType.Lightbulb;
         CurrentObject = Instantiate(Lightbulb_Off, this.transform.position, Quaternion.Euler(0, 0, 0));
+        Ohms = 10.0f;
 
         LightbulbScript lightbulb = CurrentObject.GetComponent<LightbulbScript>();
         if (lightbulb != null)
@@ -195,6 +209,7 @@ public class ConnectionNode : MonoBehaviour
         }
         //print("reaches here");
         ItemType = ItemType.None;
+        Ohms = 0.0f;
     }
 
     public void InstantiateSwitchNode(int rotation, bool up, bool left, bool down, bool right)
@@ -246,6 +261,7 @@ public class ConnectionNode : MonoBehaviour
             directions[curr] = right;
 
             switchScr.SetCorrectCablesOnSwitch(directions);
+            Ohms = 0.0f;
         }
     }
 
