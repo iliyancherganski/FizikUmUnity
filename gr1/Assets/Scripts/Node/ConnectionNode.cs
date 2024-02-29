@@ -24,7 +24,7 @@ public class ConnectionNode : MonoBehaviour
     [Header("Battery Prefabs")]
     public GameObject Battery1;
     public ConnectionNode batteryNode;
-    public bool isPositive = false;
+    public bool isPositive;
 
     [Header("Lightbulb Prefabs")]
     public GameObject Lightbulb_Off;
@@ -38,10 +38,6 @@ public class ConnectionNode : MonoBehaviour
     public float Ohms;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        isPositive = false;
-    }
 
     // Update is called once per frame
     void Update()

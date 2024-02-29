@@ -62,7 +62,7 @@ public class GridConnectionNode : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
         {
             print("Exporting grid...");
-            importExport.GridExport(this);
+            importExport.GridExport();
         }
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
         {
@@ -77,7 +77,7 @@ public class GridConnectionNode : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            RegenerateGrid();
+            RegenerateGrid(GridSizeX, GridSizeY);
         }
         if (Input.GetKeyDown(placeBatteryKey))
         {
@@ -131,7 +131,7 @@ public class GridConnectionNode : MonoBehaviour
         }
     }
 
-    public void RegenerateGrid()
+    public void RegenerateGrid(int gridSizeX, int gridSizeY)
     {
         foreach (var item in cells)
         {
@@ -139,6 +139,9 @@ public class GridConnectionNode : MonoBehaviour
             Destroy(item.connectionNode);
             Destroy(item.gameObject);
         }
+        GridSizeX = gridSizeX;
+        GridSizeY = gridSizeY;
+
         GenerateGrid();
     }
 

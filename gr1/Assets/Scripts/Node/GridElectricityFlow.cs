@@ -275,7 +275,9 @@ public class GridElectricityFlow : MonoBehaviour
             if (cell.connectionNode.ItemType == ItemType.Battery
                 && cell.connectionNode.isPositive)
             {
+                print("Added Battery");
                 grid.cellsWithBattery.Add(cell);
+                cell.connectionNode.isPositive = true;
             }
             else if (grid.cellsWithBattery.Contains(cell))
             {
