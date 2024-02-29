@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 708, y: 492}
   m_MaxSize: {x: 18003, y: 14042}
   vertical: 0
-  controlID: 21562
+  controlID: 1482
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_MinSize: {x: 432, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 1
-  controlID: 21284
+  controlID: 1384
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_MinSize: {x: 401, y: 221}
   m_MaxSize: {x: 8001, y: 4021}
   vertical: 0
-  controlID: 21238
+  controlID: 1333
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -183,8 +183,8 @@ MonoBehaviour:
     y: 0
     width: 799
     height: 426
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -389,7 +389,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: fad9feff8003ffff8404ffff9804ffffac04ffffc0abffffaad5ffff72fbfffff2330000fc33000016340000463400006434000086340000e6340000
+      m_ExpandedIDs: 72fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_MinSize: {x: 432, y: 271}
   m_MaxSize: {x: 14002, y: 10021}
   vertical: 0
-  controlID: 21285
+  controlID: 1385
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -457,8 +457,8 @@ MonoBehaviour:
     y: 0
     width: 798
     height: 513
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -530,20 +530,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/UI
+    - Assets/Scripts/ImportExport
   m_ViewMode: 1
   m_StartGridSize: 68
   m_LastFolders:
-  - Assets/UI
+  - Assets/Scripts/ImportExport
   m_LastFoldersGridSize: 68
   m_LastProjectPath: C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 43}
-    m_SelectedIDs: dc380000
-    m_LastClickedID: 14556
-    m_ExpandedIDs: 000000007e38000080380000823800008438000086380000883800008a38000000ca9a3b
+    m_SelectedIDs: f8380000
+    m_LastClickedID: 14584
+    m_ExpandedIDs: 00000000a4380000a6380000a8380000aa380000ac380000ae380000b038000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -571,7 +571,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007e38000080380000823800008438000086380000883800008a38000000ca9a3b
+    m_ExpandedIDs: 00000000a4380000a6380000a8380000aa380000ac380000ae380000b038000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -596,8 +596,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 02b0feff
-    m_LastClickedInstanceID: -86014
+    m_SelectedInstanceIDs: 16340000
+    m_LastClickedInstanceID: 13334
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c623000000000000c8380000
     m_RenameOverlay:
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_MinSize: {x: 276, y: 242}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 21563
+  controlID: 1483
 --- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -697,8 +697,8 @@ MonoBehaviour:
     y: 0
     width: 442
     height: 626
-  m_MinSize: {x: 276, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -740,8 +740,8 @@ MonoBehaviour:
     m_ControlHash: 1412526313
     m_PrefName: Preview_InspectorPreview
   m_PreviewWindow: {fileID: 0}
-  m_LastInspectedObjectInstanceID: -86014
-  m_LastVerticalScrollValue: 360
+  m_LastInspectedObjectInstanceID: 13334
+  m_LastVerticalScrollValue: 100
 --- !u!114 &18
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -795,12 +795,10 @@ MonoBehaviour:
     height: 292
   m_ViewDataDictionary: {fileID: 0}
   m_OpenAddComponentMenu: 0
-  m_ObjectsLockedBeforeSerialization:
-  - {fileID: 0}
-  - {fileID: 0}
-  m_InstanceIDsLockedBeforeSerialization: 16340000
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
   m_LockTracker:
-    m_IsLocked: 1
+    m_IsLocked: 0
   m_PreviewResizer:
     m_CachedPref: 162
     m_ControlHash: 1412526313

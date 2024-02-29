@@ -20,6 +20,7 @@ public class GridObject
 
         public ItemType type;
         public int rotation = 0;
+        public int interacted = 0;
 
         public CellObject(int x, int y, ItemType type)
         {
@@ -34,6 +35,15 @@ public class GridObject
             Y = y;
             this.type = type;
             this.rotation = rotation;
+        }
+
+        public CellObject(int x, int y, ItemType type, int rotation, int interacted)
+        {
+            X = x;
+            Y = y;
+            this.type = type;
+            this.rotation = rotation;
+            this.interacted = interacted;
         }
     }
 }

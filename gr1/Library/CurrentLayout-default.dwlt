@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 708, y: 492}
   m_MaxSize: {x: 18003, y: 14042}
   vertical: 0
-  controlID: 22095
+  controlID: 1852
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_MinSize: {x: 432, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 1
-  controlID: 21951
+  controlID: 1666
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_MinSize: {x: 401, y: 221}
   m_MaxSize: {x: 8001, y: 4021}
   vertical: 0
-  controlID: 21901
+  controlID: 1667
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_MinSize: {x: 432, y: 271}
   m_MaxSize: {x: 14002, y: 10021}
   vertical: 0
-  controlID: 21952
+  controlID: 1755
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_MinSize: {x: 276, y: 242}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 22096
+  controlID: 1853
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -633,9 +633,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: fc330000
-      m_LastClickedID: 13308
-      m_ExpandedIDs: fad9feff8003ffff8404ffff9804ffffac04ffffc0abffffaad5ffff72fbfffff233000016340000463400006434000086340000e6340000
+      m_SelectedIDs: 16340000
+      m_LastClickedID: 13334
+      m_ExpandedIDs: 72fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -698,20 +698,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/UI
+    - Assets/Scripts/ImportExport
   m_ViewMode: 1
   m_StartGridSize: 68
   m_LastFolders:
-  - Assets/UI
+  - Assets/Scripts/ImportExport
   m_LastFoldersGridSize: 68
   m_LastProjectPath: C:\Users\Asus\Documents\GitHub\FizikUmUnity\gr1
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 43}
-    m_SelectedIDs: dc380000
-    m_LastClickedID: 14556
-    m_ExpandedIDs: 000000007e38000080380000823800008438000086380000883800008a38000000ca9a3b
+    m_SelectedIDs: f8380000
+    m_LastClickedID: 14584
+    m_ExpandedIDs: 00000000a4380000a6380000a8380000aa380000ac380000ae380000b038000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -739,7 +739,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007e38000080380000823800008438000086380000883800008a38000000ca9a3b
+    m_ExpandedIDs: 00000000a4380000a6380000a8380000aa380000ac380000ae380000b038000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -858,7 +858,7 @@ MonoBehaviour:
     m_PrefName: Preview_InspectorPreview
   m_PreviewWindow: {fileID: 0}
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 360
+  m_LastVerticalScrollValue: 100
 --- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -886,11 +886,10 @@ MonoBehaviour:
     height: 292
   m_ViewDataDictionary: {fileID: 0}
   m_OpenAddComponentMenu: 0
-  m_ObjectsLockedBeforeSerialization:
-  - {fileID: 0}
-  m_InstanceIDsLockedBeforeSerialization: 16340000
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
   m_LockTracker:
-    m_IsLocked: 1
+    m_IsLocked: 0
   m_PreviewResizer:
     m_CachedPref: 162
     m_ControlHash: 1412526313

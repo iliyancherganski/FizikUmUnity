@@ -528,24 +528,29 @@ public class GridConnectionNode : MonoBehaviour
 
         //print($"row{xIndex} col{yIndex}" + Environment.NewLine + $"Up:{up}  Left:{left}  Down:{down}  Right:{right}");
         var rotation = 0;
-        var currCell = cells[xIndex, yIndex].connectionNode;
-        if (currCell.ItemType == ItemType.Switch)
+        bool interacted = false;
+        var currCell = cells[xIndex, yIndex];
+        if (currCell.connectionNode.ItemType == ItemType.Switch)
         {
-            rotation = currCell.Rotation;
-            //print("SWITCH");
+            rotation = currCell.connectionNode.Rotation;
+            interacted = currCell.IsATurnedOnSwitch();
         }
         else rotation = PlacementModeRotation;
 
         cells[xIndex, yIndex].InstantiateCorrectPrefab(itemType, canBePlaced, up, left, down, right, rotation);
-        /*if (wasSelected)
-        {
-            cells[xIndex, yIndex].cellStatus = CellStatus.Selected;
-        }*/
-       /* if (firstLoop)
-        {
-            flow.GridCheck();
-        }*/
 
+        SwitchScript switchScr = currCell.connectionNode.CurrentObject.GetComponent<SwitchScript>();
+        if (switchScr != null)
+        {
+            if (interacted)
+            {
+                switchScr.ButtonIsOn(true);
+            }
+            else
+            {
+                switchScr.ButtonIsOn(false);
+            }
+        }
     }
 
     public void Create_Battery_With_2Cables(GridCell[] cellArray)

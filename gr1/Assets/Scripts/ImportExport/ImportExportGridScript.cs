@@ -24,12 +24,17 @@ public class ImportExportGridScript : MonoBehaviour
             }
             else
             {
+                int interacted = 0;
+                if (cell.connectionNode.ItemType == ItemType.Switch && cell.IsATurnedOnSwitch())
+                {
+                    interacted = 1;
+                }
                 if (cell.connectionNode.ItemType == ItemType.Battery && !cell.connectionNode.isPositive)
                 {
                     continue;
                 }
                 print("Added battery/switch to export");
-                obj.cellObjects.Add(new GridObject.CellObject(cell.GridIndex_X, cell.GridIndex_Y, cell.connectionNode.ItemType, cell.connectionNode.Rotation));
+                obj.cellObjects.Add(new GridObject.CellObject(cell.GridIndex_X, cell.GridIndex_Y, cell.connectionNode.ItemType, cell.connectionNode.Rotation, interacted));
             }
         }
 
@@ -46,7 +51,7 @@ public class ImportExportGridScript : MonoBehaviour
         GridObject obj = null;
         try
         {
-             obj = JsonUtility.FromJson<GridObject>(json);
+            obj = JsonUtility.FromJson<GridObject>(json);
         }
         catch (System.Exception)
         {
@@ -63,13 +68,7 @@ public class ImportExportGridScript : MonoBehaviour
             grid.CreateAction_GridPrefab(lightbulb.X, lightbulb.Y, ItemType.Lightbulb);
             grid.ClearSelections();
         }
-        foreach (var Switch in obj.cellObjects.Where(x => x.type == ItemType.Switch))
-        {
-            grid.cells[Switch.X, Switch.Y].cellStatus = CellStatus.Selected;
-            grid.PlacementModeRotation = Switch.rotation;
-            grid.CreateAction_GridPrefab(Switch.X, Switch.Y, ItemType.Switch);
-            grid.ClearSelections();
-        }
+
         foreach (var battery in obj.cellObjects.Where(x => x.type == ItemType.Battery))
         {
             grid.cells[battery.X, battery.Y].cellStatus = CellStatus.Selected;
@@ -102,6 +101,7 @@ public class ImportExportGridScript : MonoBehaviour
             grid.cells[battery.X, battery.Y].connectionNode.isPositive = true;
             print($"isPositive: {grid.cells[battery.X, battery.Y].connectionNode.isPositive}");
         }
+
         foreach (var cable in obj.cellObjects.Where(x => x.type == ItemType.Cable))
         {
             grid.cells[cable.X, cable.Y].cellStatus = CellStatus.Selected;
@@ -109,6 +109,28 @@ public class ImportExportGridScript : MonoBehaviour
             grid.CreateAction_GridPrefab(cable.X, cable.Y, ItemType.Cable);
             grid.ClearSelections();
         }
+
+        foreach (var Switch in obj.cellObjects.Where(x => x.type == ItemType.Switch))
+        {
+            grid.cells[Switch.X, Switch.Y].cellStatus = CellStatus.Selected;
+            grid.PlacementModeRotation = Switch.rotation;
+            grid.CreateAction_GridPrefab(Switch.X, Switch.Y, ItemType.Switch);
+
+            SwitchScript switchScr = grid.cells[Switch.X, Switch.Y].connectionNode.CurrentObject.GetComponent<SwitchScript>();
+            if (switchScr != null)
+            {
+                if (Switch.interacted == 1)
+                {
+                    switchScr.ButtonIsOn(true);
+                }
+                else if (Switch.interacted == 0)
+                {
+                    switchScr.ButtonIsOn(false);
+                }
+            }
+            grid.ClearSelections();
+        }
+
         grid.flow.GridCheck();
         grid.ClearSelections();
         return "Успешно зареждане на симулацията.";
