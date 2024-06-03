@@ -41,8 +41,11 @@ public class ImportExportGridScript : MonoBehaviour
         // Serialize the entire GridObject
         jsonExport = JsonUtility.ToJson(obj);
         print("Grid exported successfully.");
-
+#if UNITY_WEBGL && !UNITY_EDITOR
+    CopyToClipboard(jsonExport);
+#else
         GUIUtility.systemCopyBuffer = jsonExport;
+        #endif
         print("Json copied on clipboard.");
     }
 
@@ -135,4 +138,7 @@ public class ImportExportGridScript : MonoBehaviour
         grid.ClearSelections();
         return "Успешно зареждане на симулацията.";
     }
+
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern void CopyToClipboard(string str);
 }
