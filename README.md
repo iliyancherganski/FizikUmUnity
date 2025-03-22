@@ -1,4 +1,5 @@
 # FizikUm - 3D Educational Electrical Circuit Simulation
+## <a href="https://files.fm/f/4xxjuxfs7t"> Download the simulation</a>
 ![image](https://github.com/user-attachments/assets/af5365e0-e909-45c7-b37c-26667cb784ff)
 
 **FizikUm** is a 3D simulation designed to help students from 7th to 12th grade (for Bulgaria) understand and experiment with electrical circuits. Created using **Unity**, this application offers an engaging and interactive learning experience that promotes a deeper understanding of electrical concepts.
@@ -21,4 +22,4 @@ Whether you're a student looking to explore circuit design or a teacher trying t
 - **Blender 3D** (for custom 3D modeling)
 - **C#** (for scripting)
 
-# <a href="https://files.fm/f/4xxjuxfs7t"> Download the simulation </a>
+
