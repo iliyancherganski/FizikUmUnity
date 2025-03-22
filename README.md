@@ -16,8 +16,9 @@ The aim of **FizikUm** is to facilitate virtual learning by providing personaliz
 ![ezgif-366a9ae137dd62](https://github.com/user-attachments/assets/337eb9a5-1899-488d-acf0-328197b86506)
 Whether you're a student looking to explore circuit design or a teacher trying to make learning more interactive, **FizikUm** offers a unique platform to bring electrical circuits to life.
 
-
 ## 🚀 Technologies Used:
 - **Unity Engine** (for creating the 3D simulation)
 - **Blender 3D** (for custom 3D modeling)
 - **C#** (for scripting)
+
+# <a href="https://files.fm/f/4xxjuxfs7t"> Download the simulation </a>
